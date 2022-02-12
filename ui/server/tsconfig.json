@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "lib": ["es2020", "es2017", "esnext.asynciterable"],
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "*" : ["types/*"]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}
