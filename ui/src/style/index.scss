@@ -6,7 +6,6 @@ html {
   /**16px * 62.5% =10px*/
   /** 1rem = 10px*/
   font-size: 62.5%;
-
 }
 html body #root {
   width: 100vw;
@@ -14,7 +13,7 @@ html body #root {
 
 .cardContainer {
   display: flex;
-  flex-direction: column ;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -28,6 +27,6 @@ html body #root {
     text-align: center;
     .login-title {
       margin-bottom: 2.4rem;
+    }
   }
-}
 }

@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -23,7 +25,7 @@ public class AuthorizationController {
     private JwtConfig jwtConfig;
 
     @PostMapping("/token")
-    public ResponseEntity<String> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
+    public ResponseEntity<Map<String,String>> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
         log.info("{} is try to login", request.getUsername());
 //        Cookie cookie = new Cookie("token", "abcccbbbbb");
 //        response.addCookie(cookie);
@@ -41,8 +43,9 @@ public class AuthorizationController {
                 token = jwtConfig.createToken(user.getUsername());
                 log.info("Create a new token for {}", user.getUsername());
             }
-
-            return ResponseEntity.ok(token);
+            Map<String, String> map = new HashMap<>();
+            map.put("token", token);
+            return ResponseEntity.ok(map);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
