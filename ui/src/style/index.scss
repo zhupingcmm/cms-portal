@@ -1,3 +1,33 @@
-.container {
-  color: red;
+html {
+  /** rem em*/
+  /**em 相对于父元素的font-size*/
+  /**rem 相对于根元素html的font-size r 就是root的意思*/
+  /** 各大厂商font-size默认值是16px*/
+  /**16px * 62.5% =10px*/
+  /** 1rem = 10px*/
+  font-size: 62.5%;
+
+}
+html body #root {
+  width: 100vw;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column ;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  .shadowCard {
+    width: 40rem;
+    min-height: 56rem;
+    padding: 3.2rem 4rem;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
+    text-align: center;
+    .login-title {
+      margin-bottom: 2.4rem;
+  }
+}
 }

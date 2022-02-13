@@ -17,6 +17,10 @@ module.exports = {
   stats: "errors-warnings",
   resolve: {
     extensions: ["*", ".ts", ".tsx", ".js", ".jsx", ".json"],
+    preferRelative: true,
+    alias: {
+      "@src": path.resolve(__dirname, "../../src"),
+    },
   },
   module: {
     rules: [
