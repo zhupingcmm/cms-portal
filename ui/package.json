@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config scripts/webpack/webpack.prod.js",
     "dev": "webpack serve --config scripts/webpack/webpack.dev.js",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "formate": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,11 @@
     "css-loader": "^6.6.0",
     "dotenv": "^16.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.3",
     "mini-css-extract-plugin": "^2.5.3",
     "node-sass": "^4.14.1",
+    "prettier": "2.5.1",
     "react-refresh": "^0.11.0",
     "react-refresh-typescript": "^2.0.3",
     "sass-loader": "^12.4.0",

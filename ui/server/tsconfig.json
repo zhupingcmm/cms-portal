@@ -19,7 +19,7 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "*" : ["types/*"]
+      "*": ["types/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
