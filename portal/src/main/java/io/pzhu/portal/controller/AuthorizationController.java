@@ -25,7 +25,7 @@ public class AuthorizationController {
     private JwtConfig jwtConfig;
 
     @PostMapping("/token")
-    public ResponseEntity<Map<String,String>> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserRequest> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
         log.info("{} is try to login", request.getUsername());
 //        Cookie cookie = new Cookie("token", "abcccbbbbb");
 //        response.addCookie(cookie);
@@ -43,14 +43,24 @@ public class AuthorizationController {
                 token = jwtConfig.createToken(user.getUsername());
                 log.info("Create a new token for {}", user.getUsername());
             }
-            Map<String, String> map = new HashMap<>();
-            map.put("token", token);
-            return ResponseEntity.ok(map);
+            UserRequest result = UserRequest.builder()
+                    .username(request.getUsername())
+                    .department(request.getDepartment())
+                    .email(request.getEmail())
+                    .token(token)
+                    .build();
+            return ResponseEntity.ok(result);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserRequest> getMeInfo(@RequestHeader(value = "Authorization") String token) {
+        log.debug("{} is try to get user info", token);
+        return null;
     }
 
 }

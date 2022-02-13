@@ -64,7 +64,6 @@ public class TokenInterceptor implements HandlerInterceptor {
                     jwtConfig.getTokenMap().put(userName, token);
                 }
                 return true;
-
             }
         }
 

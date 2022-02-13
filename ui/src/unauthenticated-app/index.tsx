@@ -1,17 +1,15 @@
 import React from "react";
 import { Button, Card, Form, Input, Divider } from "antd";
-import { http } from '@src/utils/http';
+import { http } from "@src/utils/http";
 
 export const UnauthenticatedApp = () => {
-
-  const handleSubmit = async (values:{
-      username: string,
-      password: string
+  const handleSubmit = async (values: {
+    username: string;
+    password: string;
   }) => {
-    console.log('===================')
-    const data = await http('token', {data: values, method: 'POST'});
+    const data = await http("token", { data: values, method: "POST" });
     console.log(data);
-  }
+  };
 
   return (
     <div className="cardContainer">
