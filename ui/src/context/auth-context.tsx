@@ -2,6 +2,7 @@ import React, { ReactNode, useCallback, useContext, useEffect } from "react";
 import * as auth from "@src/utils/auth_provider";
 import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
+import { FullPageLoading } from "@src/components/full-page-loading";
 
 export interface User {
   username: string;
@@ -50,6 +51,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
+
+  if (isLoading || isIdle) {
+    return <FullPageLoading />;
+  }
   return (
     <AuthContext.Provider value={{ login, logout, user }}>
       {children}

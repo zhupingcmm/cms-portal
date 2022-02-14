@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card, Form, Input, Divider } from "antd";
 import { http } from "@src/utils/http";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@src/context/auth-context";
 
 export const UnauthenticatedApp = () => {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/home");
+  }, [user]);
+
   const handleSubmit = async (values: {
     username: string;
     password: string;
   }) => {
-    const data = await http("token", { data: values, method: "POST" });
-    console.log(data);
+    const user = await login(values);
+    console.log(user);
+    navigate("/home");
   };
 
   return (
@@ -33,7 +43,6 @@ export const UnauthenticatedApp = () => {
             Login
           </Button>
         </Form>
-
         <Divider />
       </Card>
     </div>

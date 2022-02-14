@@ -2,6 +2,7 @@ package io.pzhu.portal.controller;
 
 import io.pzhu.portal.entity.User;
 import io.pzhu.portal.jwt.JwtConfig;
+import io.pzhu.portal.jwt.JwtUtil;
 import io.pzhu.portal.service.UserService;
 import io.pzhu.portal.vo.UserRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,22 @@ public class AuthorizationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserRequest> getMeInfo(@RequestHeader(value = "Authorization") String token) {
-        log.debug("{} is try to get user info", token);
-        return null;
+    public ResponseEntity<UserRequest> getMeInfo(@RequestHeader(value = "Authorization") String authorization) {
+        try {
+            String token = JwtUtil.parseToken(authorization);
+            log.debug("{} is try to get user info", token);
+            String userName = jwtConfig.getUsernameFromToken(token);
+            User user = userService.findByName(userName);
+            UserRequest userRequest = UserRequest.builder()
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .department(user.getDepartment())
+                    .build();
+            return ResponseEntity.ok(userRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
 }

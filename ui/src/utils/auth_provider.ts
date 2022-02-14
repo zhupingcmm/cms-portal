@@ -22,7 +22,7 @@ export const handleResponse = (data: User) => {
 };
 
 export const login = (authForm: AuthForm) => {
-  return http("/token", { method: "POST", data: authForm })
+  return http("token", { method: "POST", data: authForm })
     .then(async (res) => {
       return handleResponse(res);
     })
