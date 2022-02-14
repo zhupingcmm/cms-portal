@@ -11,10 +11,7 @@ export interface User {
   email: string;
 }
 
-export interface AuthForm {
-  username: string;
-  password: string;
-}
+export type AuthForm = Pick<User, "username" | "password">;
 
 const AuthContext = React.createContext<
   | {
@@ -54,9 +51,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
   return (
-    <AuthContext.Provider
-      value={{ login, logout, user }}
-    ></AuthContext.Provider>
+    <AuthContext.Provider value={{ login, logout, user }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
