@@ -29,8 +29,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const {
     isLoading,
     isIdle,
-    error,
-    isError,
     run,
     data: user,
     setData: setUser,

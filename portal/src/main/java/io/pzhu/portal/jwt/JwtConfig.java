@@ -3,7 +3,9 @@ package io.pzhu.portal.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.pzhu.portal.redis.RedisOperator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -16,6 +18,9 @@ import java.util.Map;
 public class JwtConfig {
     private final String SECRET = "cms-portal";
     private final String HEADER = "token";
+
+    @Autowired
+    private RedisOperator<String,Object> redisOperator;
 
     private static final Map<String, String> tokenMap =  new HashMap<>();
 
@@ -33,6 +38,7 @@ public class JwtConfig {
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
+        redisOperator.set(subject, userToken);
         tokenMap.put(subject, userToken);
         return userToken;
     }
@@ -70,6 +76,10 @@ public class JwtConfig {
 
     public Map<String, String> getTokenMap() {
         return tokenMap;
+    }
+
+    public String getTokenByUserName(String username) {
+        return (String) redisOperator.get(username);
     }
 
 }

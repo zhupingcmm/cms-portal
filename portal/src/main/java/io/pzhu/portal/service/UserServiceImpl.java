@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Cacheable(key = "#name", value = "userCache")
+    @Cacheable(key = "#name", value = "userCache", unless = "#result == null ")
     public User findByName(String name) {
         try {
             return userDao.findByUsername(name);

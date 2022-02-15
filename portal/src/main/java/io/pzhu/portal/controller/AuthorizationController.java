@@ -39,15 +39,16 @@ public class AuthorizationController {
                 return ResponseEntity.notFound().build();
             }
 
-            String token = jwtConfig.getTokenMap().get(user.getUsername());
+//            String token = jwtConfig.getTokenMap().get(user.getUsername());
+            String token = jwtConfig.getTokenByUserName(user.getUsername());
             if (ObjectUtils.isEmpty(token) || jwtConfig.isTokenExpired(jwtConfig.getExpirationDateFromToken(token))) {
                 token = jwtConfig.createToken(user.getUsername());
                 log.info("Create a new token for {}", user.getUsername());
             }
             UserRequest result = UserRequest.builder()
-                    .username(request.getUsername())
-                    .department(request.getDepartment())
-                    .email(request.getEmail())
+                    .username(user.getUsername())
+                    .department(user.getDepartment())
+                    .email(user.getEmail())
                     .token(token)
                     .build();
             return ResponseEntity.ok(result);
