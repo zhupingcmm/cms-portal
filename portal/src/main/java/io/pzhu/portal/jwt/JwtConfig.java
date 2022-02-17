@@ -1,60 +1,53 @@
 package io.pzhu.portal.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.pzhu.portal.redis.RedisOperator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @Slf4j
 public class JwtConfig {
     private final String SECRET = "cms-portal";
-    private final String HEADER = "token";
 
-    @Autowired
-    private RedisOperator<String,Object> redisOperator;
-
-    private static final Map<String, String> tokenMap =  new HashMap<>();
 
     public String createToken(String subject) {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.DAY_OF_MONTH, 10);
+        calendar.add(Calendar.MINUTE, 1);
         Date expireDate = calendar.getTime();
 
-        String userToken = Jwts.builder()
+        return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        redisOperator.set(subject, userToken);
-        tokenMap.put(subject, userToken);
-        return userToken;
     }
 
 
     public Claims getTokenClaim(String token) {
-        try{
-            return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
 
 
-    public boolean isTokenExpired(Date expirationTime) {
-        return expirationTime.before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            Date expirationTime = getTokenClaim(token).getExpiration();
+            return expirationTime.before(new Date());
+        } catch (Exception e) {
+            if (e instanceof ExpiredJwtException) {
+                return true;
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -74,12 +67,5 @@ public class JwtConfig {
         return getTokenClaim(token).getIssuedAt();
     }
 
-    public Map<String, String> getTokenMap() {
-        return tokenMap;
-    }
-
-    public String getTokenByUserName(String username) {
-        return (String) redisOperator.get(username);
-    }
 
 }

@@ -2,6 +2,7 @@ package io.pzhu.portal.service;
 
 import io.pzhu.portal.dao.UserDao;
 import io.pzhu.portal.entity.User;
+import io.pzhu.portal.jwt.JwtConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -18,11 +19,16 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private JwtConfig jwtConfig;
+
 
     @Override
-    @CachePut(key = "#user.id", value = "userCache")
+    @CachePut(key = "#user.username", value = "userCache")
     public User addUser(User user) {
         try {
+            String token = jwtConfig.createToken(user.getUsername());
+            user.setToken(token);
             return userDao.save(user);
         } catch (Exception e) {
             log.error("Failed to add {}", user);

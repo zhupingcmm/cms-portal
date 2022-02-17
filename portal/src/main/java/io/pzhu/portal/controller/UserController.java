@@ -20,19 +20,21 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody UserRequest request) {
+        log.info("try to get {} user info.", request.getUsername());
         return ResponseEntity.ok(userService.addUser(request.toUser()));
     }
 
     @GetMapping("/user")
     @PassToken
     public ResponseEntity<User> findByName(@RequestParam String name){
+        log.info("try to get {} user info.", name);
         return ResponseEntity.ok(userService.findByName(name));
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
+        log.info("try to get all users info");
         List<User> users = userService.findAll();
-//        log.info("users {}", users.toString());
         return ResponseEntity.ok(users);
     }
 }

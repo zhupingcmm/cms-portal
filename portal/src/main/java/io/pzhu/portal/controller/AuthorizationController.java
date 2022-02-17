@@ -3,6 +3,7 @@ package io.pzhu.portal.controller;
 import io.pzhu.portal.entity.User;
 import io.pzhu.portal.jwt.JwtConfig;
 import io.pzhu.portal.jwt.JwtUtil;
+import io.pzhu.portal.redis.RedisOperator;
 import io.pzhu.portal.service.UserService;
 import io.pzhu.portal.vo.UserRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,6 +23,9 @@ public class AuthorizationController {
 
     @Autowired
     private JwtConfig jwtConfig;
+
+    @Autowired
+    private RedisOperator<String, User> redisOperator;
 
     @PostMapping("/token")
     public ResponseEntity<UserRequest> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
@@ -38,13 +40,16 @@ public class AuthorizationController {
                 log.warn("{} is not found ", request.getUsername());
                 return ResponseEntity.notFound().build();
             }
-
-//            String token = jwtConfig.getTokenMap().get(user.getUsername());
-            String token = jwtConfig.getTokenByUserName(user.getUsername());
-            if (ObjectUtils.isEmpty(token) || jwtConfig.isTokenExpired(jwtConfig.getExpirationDateFromToken(token))) {
+            String token = user.getToken();
+            if (ObjectUtils.isEmpty(token) || jwtConfig.isTokenExpired(token)) {
                 token = jwtConfig.createToken(user.getUsername());
                 log.info("Create a new token for {}", user.getUsername());
+                user.setToken(token);
+                // update redis cache
+                redisOperator.set("userCache::" + user.getUsername(), user);
             }
+
+
             UserRequest result = UserRequest.builder()
                     .username(user.getUsername())
                     .department(user.getDepartment())
@@ -70,6 +75,7 @@ public class AuthorizationController {
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .department(user.getDepartment())
+                    .token(token)
                     .build();
             return ResponseEntity.ok(userRequest);
         } catch (Exception e) {
