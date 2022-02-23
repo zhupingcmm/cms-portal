@@ -1,6 +1,9 @@
 package io.pzhu.portal.controller;
 
 import io.pzhu.portal.entity.User;
+import io.pzhu.portal.exception.ExceptionEnum;
+import io.pzhu.portal.exception.ExceptionResult;
+import io.pzhu.portal.exception.PortalException;
 import io.pzhu.portal.jwt.JwtConfig;
 import io.pzhu.portal.jwt.JwtUtil;
 import io.pzhu.portal.redis.RedisOperator;
@@ -28,7 +31,7 @@ public class AuthorizationController {
     private RedisOperator<String, User> redisOperator;
 
     @PostMapping("/token")
-    public ResponseEntity<UserRequest> getToken (@RequestBody UserRequest request, HttpServletResponse response) {
+    public ResponseEntity getToken (@RequestBody UserRequest request, HttpServletResponse response) {
         log.info("{} is try to login", request.getUsername());
 //        Cookie cookie = new Cookie("token", "abcccbbbbb");
 //        response.addCookie(cookie);
@@ -38,7 +41,10 @@ public class AuthorizationController {
             if (ObjectUtils.isEmpty(user)) {
                 // user is not exit
                 log.warn("{} is not found ", request.getUsername());
-                return ResponseEntity.notFound().build();
+                PortalException e = new PortalException(ExceptionEnum.UNAUTHORIZED);
+                return ResponseEntity.status(e.getExceptionEnum().getCode()).body(new ExceptionResult(e.getExceptionEnum()));
+//                throw new PortalException(ExceptionEnum.UNAUTHORIZED);
+//                return ResponseEntity.notFound().build();
             }
             String token = user.getToken();
             if (ObjectUtils.isEmpty(token) || jwtConfig.isTokenExpired(token)) {

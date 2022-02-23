@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody UserRequest request) {
-        log.info("try to get {} user info.", request.getUsername());
+        log.info("try to create {} user.", request.getUsername());
         return ResponseEntity.ok(userService.addUser(request.toUser()));
     }
 

@@ -1,0 +1,29 @@
+import fetch from "node-fetch";
+const url = 'http://localhost:8090/';
+
+interface User {
+    username?: string;
+    password?: string;
+    email?: string;
+    department?: string;
+    token?: string;
+}
+
+export const addUser = async (user: User) => {
+    try {
+        const response = await fetch(`${url}user`, {
+            method: 'POST',
+            body: JSON.stringify(user)
+        });
+        const data = response.json();
+    } catch(e) {
+        console.error(e);
+    }
+
+}
+
+const start = () => {
+    addUser({username: 'oo', password: '1', email: 'oo@163.com', department: 'cms', token: 'dddd'})
+}
+
+start();

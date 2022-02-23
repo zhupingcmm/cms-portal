@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService{
         try {
             String token = jwtConfig.createToken(user.getUsername());
             user.setToken(token);
+            log.info("save {} info to db and redis", user.getUsername());
             return userDao.save(user);
         } catch (Exception e) {
             log.error("Failed to add {}", user);
