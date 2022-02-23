@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpInitializer extends ChannelInitializer<SocketChannel> {
 
-//	@Autowired
-//	private HttpHandler httpHandler;
+	@Autowired
+	private HttpHandler httpHandler;
 
 	@Override
 	public void initChannel(SocketChannel ch) {
@@ -20,6 +20,6 @@ public class HttpInitializer extends ChannelInitializer<SocketChannel> {
 		p.addLast(new HttpServerCodec());
 		//p.addLast(new HttpServerExpectContinueHandler());
 		p.addLast(new HttpObjectAggregator(1024 * 1024));
-		p.addLast(new HttpHandler());
+		p.addLast(httpHandler);
 	}
 }

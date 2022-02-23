@@ -12,19 +12,20 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zula.config.AppConfig;
 
 @Service
 public class NettyServer {
 
-//    @Autowired
-//    private HttpInitializer httpInitializer;
-    public static void main(String[] args) {
-        NettyServer server = new NettyServer();
-        server.start();
-    }
+    @Autowired
+    private HttpInitializer httpInitializer;
+
+    @Autowired
+    private AppConfig appConfig;
+
     public void start() {
 
-        int port = 8808;
+        int port = Integer.parseInt(appConfig.getConfig().getValueByKey("port"));
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(2);
         EventLoopGroup workerGroup = new NioEventLoopGroup(16);
@@ -43,7 +44,7 @@ public class NettyServer {
 
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new HttpInitializer());
+                    .childHandler(httpInitializer);
 
             Channel ch = b.bind(port).sync().channel();
             System.out.println("开启netty http服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
