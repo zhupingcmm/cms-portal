@@ -15,7 +15,10 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zula.netty.route.HttpRoute;
+
 import java.util.concurrent.*;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
@@ -26,6 +29,9 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 public class HttpClientHandler {
     private CloseableHttpAsyncClient client;
     private ExecutorService proxyServices;
+
+    @Autowired
+    private HttpRoute httpRoute;
 
     public HttpClientHandler () {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -52,7 +58,8 @@ public class HttpClientHandler {
     }
 
     public void handle (final FullHttpRequest fullHttpRequest, final ChannelHandlerContext ctx) {
-        proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, "http://localhost:8091/users"));
+//        String uri = fullHttpRequest.uri();
+        proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, httpRoute.getRemoteUrl(fullHttpRequest.uri())));
     }
 
     private void fetchGet(final FullHttpRequest inbound, final ChannelHandlerContext ctx, final String url) {
