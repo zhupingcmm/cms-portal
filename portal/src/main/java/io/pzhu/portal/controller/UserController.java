@@ -32,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
+    @PassToken
     public ResponseEntity<List<User>> getUsers() {
         log.info("try to get all users info");
         List<User> users = userService.findAll();
