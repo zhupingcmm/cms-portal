@@ -1,24 +1,16 @@
 package zula.netty.inbound;
 
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
+
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.ReferenceCountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zula.netty.inbound.httpclint.HttpClientHandler;
-
-import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
-import static io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE;
-import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
-import static io.netty.handler.codec.http.HttpResponseStatus.OK;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import zula.netty.inbound.httpclint.RequestInfo;
+import zula.netty.inbound.httpclint.RequestQueue;
 
 @Component
 @ChannelHandler.Sharable
@@ -26,6 +18,11 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Autowired
     private HttpClientHandler httpClientHandler;
+
+    @Autowired
+    private RequestQueue<RequestInfo> requestQueue;
+
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
@@ -34,9 +31,17 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            FullHttpRequest fullRequest = (FullHttpRequest) msg;
-            String uri = fullRequest.uri();
-            httpClientHandler.handle(fullRequest, ctx);
+//            System.out.println();
+            if (requestQueue.size() > 100 ) {
+                throw new RuntimeException("Queue size is 100, and the queue is reach the limit!!!!");
+            }
+            RequestInfo requestInfo = RequestInfo.builder()
+                    .msg(msg)
+                    .ctx(ctx)
+                    .build();
+            System.out.println("queue size is:" + requestQueue.size() + " and put one request to the queue.");
+            requestQueue.produce(requestInfo);
+            httpClientHandler.handle();
 
         } catch(Exception e) {
             e.printStackTrace();

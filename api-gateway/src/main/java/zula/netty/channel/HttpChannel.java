@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zula.netty.inbound.HttpInboundHandler;
+import zula.netty.inbound.httpclint.HttpClientHandler;
 import zula.netty.outbound.HttpOutBoundHandler;
 
 @Component
@@ -16,6 +17,9 @@ public class HttpChannel extends ChannelInitializer<SocketChannel> {
     private HttpInboundHandler httpInboundHandler;
     @Autowired
     private HttpOutBoundHandler httpOutBoundHandler;
+
+    @Autowired
+    private HttpClientHandler httpClientHandler;
 
     @Override
     public void initChannel(SocketChannel ch) {

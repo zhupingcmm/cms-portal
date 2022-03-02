@@ -33,6 +33,9 @@ public class HttpClientHandler {
     @Autowired
     private HttpRoute httpRoute;
 
+    @Autowired
+    private RequestQueue<RequestInfo> requestQueue;
+
     public HttpClientHandler () {
         int cores = Runtime.getRuntime().availableProcessors();
         int keepAliveTime = 10000;
@@ -57,9 +60,15 @@ public class HttpClientHandler {
         client.start();
     }
 
-    public void handle (final FullHttpRequest fullHttpRequest, final ChannelHandlerContext ctx) {
-//        String uri = fullHttpRequest.uri();
-        proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, httpRoute.getRemoteUrl(fullHttpRequest.uri())));
+    public void handle () {
+        System.out.println("queue size is:" + requestQueue.size() + " and consume one request from queue.");
+        RequestInfo requestInfo = requestQueue.consume();
+        if (requestInfo != null) {
+
+            ChannelHandlerContext ctx = requestInfo.getCtx();
+            FullHttpRequest fullHttpRequest = (FullHttpRequest) requestInfo.getMsg();
+            proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, httpRoute.getRemoteUrl(fullHttpRequest.uri())));
+        }
     }
 
     private void fetchGet(final FullHttpRequest inbound, final ChannelHandlerContext ctx, final String url) {
