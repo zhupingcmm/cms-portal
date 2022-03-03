@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.pzhu</groupId>
-    <artifactId>portal</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>cms-portal</artifactId>
+    <version>0.0.1</version>
     <name>portal</name>
     <description>portal</description>
     <properties>

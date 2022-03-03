@@ -3,5 +3,10 @@ import { PortalRoute } from "./routes";
 import { UnauthenticatedApp } from "./unauthenticated-app";
 
 export const App = () => {
-  return <PortalRoute />;
+  console.log("zp");
+  return (
+    <div>
+      zp
+    </div>
+  )
 };

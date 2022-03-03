@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
@@ -67,8 +68,49 @@ public class HttpClientHandler {
 
             ChannelHandlerContext ctx = requestInfo.getCtx();
             FullHttpRequest fullHttpRequest = (FullHttpRequest) requestInfo.getMsg();
-            proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, httpRoute.getRemoteUrl(fullHttpRequest.uri())));
+            String url = httpRoute.getRemoteUrl(fullHttpRequest.uri());
+            String methodName = fullHttpRequest.method().name();
+            switch (methodName) {
+                case "GET":
+                    proxyServices.submit(() -> fetchGet(fullHttpRequest, ctx, url));
+                    break;
+                case "POST":
+                    proxyServices.submit(() -> fetchPost(fullHttpRequest, ctx, url));
+                    break;
+                default:
+                    System.out.println("can not find the right method");
+
+            }
+
         }
+    }
+
+    private void fetchPost(final FullHttpRequest request, final ChannelHandlerContext ctx, final String url) {
+        final HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
+        client.execute(httpPost, new FutureCallback<HttpResponse>() {
+            @Override
+            public void completed(HttpResponse response) {
+                try {
+                    handleResponse(request, ctx, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failed(Exception e) {
+                httpPost.abort();
+                e.printStackTrace();
+            }
+
+            @Override
+            public void cancelled() {
+                httpPost.abort();
+            }
+        });
+
+
     }
 
     private void fetchGet(final FullHttpRequest inbound, final ChannelHandlerContext ctx, final String url) {
@@ -105,32 +147,15 @@ public class HttpClientHandler {
     private void handleResponse(final FullHttpRequest fullRequest, final ChannelHandlerContext ctx, final HttpResponse endpointResponse) throws Exception {
         FullHttpResponse response = null;
         try {
-//            String value = "hello,kimmking";
-//            response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(value.getBytes("UTF-8")));
-//            response.headers().set("Content-Type", "application/json");
-//            response.headers().setInt("Content-Length", response.content().readableBytes());
-
-
             byte[] body = EntityUtils.toByteArray(endpointResponse.getEntity());
-//            System.out.println(new String(body));
-//            System.out.println(body.length);
 
             response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(body));
 
             response.headers().set("Content-Type", "application/json");
-//            response.headers().setInt("Content-Length", Integer.parseInt(endpointResponse.getFirstHeader("Content-Length").getValue()));
-
-//            filter.filter(response);
-
-//            for (Header e : endpointResponse.getAllHeaders()) {
-//                //response.headers().set(e.getName(),e.getValue());
-//                System.out.println(e.getName() + " => " + e.getValue());
-//            }
 
         } catch (Exception e) {
             e.printStackTrace();
             response = new DefaultFullHttpResponse(HTTP_1_1, NO_CONTENT);
-//            exceptionCaught(ctx, e);
         } finally {
             if (fullRequest != null) {
                 if (!HttpUtil.isKeepAlive(fullRequest)) {
