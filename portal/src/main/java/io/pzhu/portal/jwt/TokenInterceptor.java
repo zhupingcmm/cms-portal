@@ -15,6 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -85,6 +86,11 @@ public class TokenInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             if (e instanceof ExpiredJwtException) {
                 log.error("token is expired");
+                try {
+                    response.sendError(401, "token is expired");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
             return false;
         }

@@ -7,6 +7,7 @@ import { useAuth } from "@src/context/auth-context";
 export const UnauthenticatedApp = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
+  console.log('UnauthenticatedApp======');
 
   useEffect(() => {
     if (user) navigate("/home");

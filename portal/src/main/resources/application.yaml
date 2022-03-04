@@ -2,7 +2,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: redis-svc
+    host: localhost
     port: 6379
     lettuce:
       pool:
@@ -11,7 +11,7 @@ spring:
   application:
     name: cms-portal
   datasource:
-    url: jdbc:mysql://mysql-svc:3306/cms_portal
+    url: jdbc:mysql://localhost:3306/cms_portal
     username: root
     password: 1234
 #    hikari:
