@@ -2,6 +2,8 @@ import express from "express";
 import fetch, {RequestInit} from "node-fetch";
 import * as qs from 'qs';
 import pkg from 'log4js';
+import bodyParser from "body-parser";
+import { BASE_URL, PORTAL_SERVICE_NAME, SERVER_PORT } from "../config.js";
 const { getLogger } = pkg;
 const log = getLogger('startup');
 
@@ -11,8 +13,10 @@ interface Config extends RequestInit {
 export const start = () => {
     
     const app = express();
+    app.use(bodyParser.json())
     app.use(express.static('../dist'));
-    app.use("/cms-portal", (req, res, next) => {
+    app.use(`/${PORTAL_SERVICE_NAME}`, (req, res, next) => {
+      log.info(req.query, req.url, req.baseUrl)
       handle(req, res, next);
     });
     
@@ -23,8 +27,11 @@ export const start = () => {
         headers: request.headers
       }
       try {
-        log.info("start to request ", `http://cms-portal?${qs.stringify(request.query)}`)
-        const res = await fetch(`http://cms-portal?${qs.stringify(request.query)}`, {...customerConfig});
+     
+        const url = `${BASE_URL}${request?.url}?${qs.stringify(request.query)}`;
+        log.info("start request to %s", url);
+        // log.info(request)
+        const res = await fetch(url, {...customerConfig});
         const data = await res.json();
         response.send(data);
       } catch (e) {
@@ -32,8 +39,8 @@ export const start = () => {
       }
       next();
     }
-    app.listen(3002, () => {
-      log.info("server is running on http://localhost:3002");
+    app.listen(SERVER_PORT, () => {
+      log.info(`server is running on http://localhost:${SERVER_PORT}`);
     });
 }
 

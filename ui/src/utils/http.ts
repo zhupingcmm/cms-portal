@@ -33,5 +33,16 @@ export const http = (
     } else {
       return Promise.reject(data);
     }
+  }).catch((e: Error) => {
+    console.error(e);
+    redirect('/abc');
   });
 };
+
+export const redirect = (contextPath: string) => {
+  const href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + contextPath;
+  let location: Location = new Location();
+  location.href = href;
+  window.location = location;
+  // window.location = location;
+}
