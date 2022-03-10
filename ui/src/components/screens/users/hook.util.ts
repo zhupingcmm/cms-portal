@@ -9,7 +9,6 @@ export const useUser = (param: Param) => {
     const { run, data, isSuccess, isLoading } = useAsync<User[]>();
     const client = useHttp();
     useEffect(() => {
-        console.log("param::",param);
         const result = {[param.key]: param.value};
         const data = cleanObject(result);
         console.log('data:::', data)

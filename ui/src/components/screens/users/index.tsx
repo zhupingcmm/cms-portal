@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useAsync } from "@src/utils/use-async";
+import React, { useState } from "react";
 import { Param, User } from "@src/types";
-import { useHttp } from "@src/utils/http";
-import { Input, Select, Table } from "antd";
+import {Table } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.uitl";
 import { useUser } from "./hook.util";
-const SELECT_OPTIONS = [
-    {
-        value: 'id',
-        label: 'Id',
-    },
-    {
-        value: 'username',
-        label: 'Username',
-    },
-    {
-        value: 'email',
-        label: 'Email',
-    },
-    {
-        value: 'department',
-        label: 'Department',
-    }
-]
 
 const columns = [
     {
