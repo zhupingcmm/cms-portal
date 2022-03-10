@@ -3,14 +3,7 @@ import * as auth from "@src/utils/auth_provider";
 import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
 import { FullPageLoading } from "@src/components/full-page-loading";
-
-export interface User {
-  username: string;
-  password: string;
-  token: string;
-  department: string;
-  email: string;
-}
+import {User} from "@src/types"
 
 export type AuthForm = Pick<User, "username" | "password">;
 

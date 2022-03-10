@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cms-portal-deploy
+  name: nginx-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cms-portal
+      app: nginx
   template:
     metadata:
       labels:
-        app: cms-portal
+        app: nginx
     spec:
       containers:
-        - name: cms-portal
-          image: pingzhu/cms-portal:1.0.6
+        - name: nginx
+          image: nginx
           ports:
-            - containerPort: 8091
+            - containerPort: 80

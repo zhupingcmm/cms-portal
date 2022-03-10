@@ -20,7 +20,7 @@ public class JwtConfig {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.MINUTE, 1);
+        calendar.add(Calendar.MINUTE, 10);
         Date expireDate = calendar.getTime();
 
         return Jwts.builder()

@@ -1,5 +1,7 @@
+import { useCallback } from 'react';
 import { GET } from "@src/config";
 import * as qs from "qs";
+import { useAuth } from '@src/context/auth-context';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 interface Config extends RequestInit {
@@ -21,7 +23,7 @@ export const http = (
   };
 
   if (config.method.toUpperCase() === GET) {
-    endpoint += `?${qs.stringify(data)}`;
+    endpoint += `?${qs.stringify( data)}`;
   } else {
     config.body = JSON.stringify(data);
   }
@@ -38,6 +40,13 @@ export const http = (
     redirect('/abc');
   });
 };
+
+export const useHttp  = () => {
+  const { user } = useAuth();
+  return useCallback((...[endpoint, config]: Parameters<typeof http>) => {
+    return http(endpoint, {...config, token: user?.token})
+  }, [user?.token])
+}
 
 export const redirect = (contextPath: string) => {
   const href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + contextPath;

@@ -3,6 +3,7 @@ import fetch, {RequestInit} from "node-fetch";
 import * as qs from 'qs';
 import pkg from 'log4js';
 import bodyParser from "body-parser";
+import compression from 'compression';
 import { BASE_URL, PORTAL_SERVICE_NAME, SERVER_PORT } from "../config.js";
 const { getLogger } = pkg;
 const log = getLogger('startup');
@@ -14,6 +15,7 @@ export const start = () => {
     
     const app = express();
     app.use(bodyParser.json())
+    app.use(compression())
     app.use(express.static('../dist'));
     app.use(`/${PORTAL_SERVICE_NAME}`, (req, res, next) => {
       log.info(req.query, req.url, req.baseUrl)
@@ -30,7 +32,6 @@ export const start = () => {
      
         const url = `${BASE_URL}${request?.url}?${qs.stringify(request.query)}`;
         log.info("start request to %s", url);
-        // log.info(request)
         const res = await fetch(url, {...customerConfig});
         const data = await res.json();
         response.send(data);

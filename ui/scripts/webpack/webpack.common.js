@@ -52,4 +52,45 @@ module.exports = {
       filename: "[name]-[contenthash:8].css",
     }),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        // common: {
+        //   test: /[\\/]node_modules[\\/]/,
+        //   name: 'common',
+        //   chunks: 'all',
+        //   priority: 1,
+        //   enforce: true,
+        //   reuseExistingChunk: true
+        // },
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2
+        },
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
+          name: 'react-family',
+          chunks: 'all',
+          priority: 10,
+          reuseExistingChunk: true
+        },
+        antd: {
+          test: /[\\/]node_modules[\\/](antd)[\\/]/,
+          name: 'antd',
+          chunks: 'all',
+          priority: 10,
+          reuseExistingChunk: true
+        },
+        tool: {
+          test: /[\\/]node_modules[\\/](qs|lodash)[\\/]/,
+          name: 'tool',
+          chunks: 'all',
+          priority: 10,
+          reuseExistingChunk: true
+        },
+      }
+
+    }
+  }
 };
