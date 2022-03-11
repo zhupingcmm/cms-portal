@@ -45,7 +45,7 @@ export const SearchPanel = ({param, setParam}: SearchPanelProps) => {
             })
         }}>
                 {
-                    SELECT_OPTIONS.map(o => <Option value={o.value}>{o.label}</Option>)
+                    SELECT_OPTIONS.map(o => <Option value={o.value} key={o.value}>{o.label}</Option>)
                 }
             </Select>
         </Form.Item>

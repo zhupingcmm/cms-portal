@@ -31,9 +31,9 @@ const columns = [
 
 export const UsersPage = () => {
     const [param, setParam] = useState<Param>({key: 'username', value: ''});
-    const {data, isLoading} = useUser(useDebounce(param, 500));
+    const {tableData, isLoading} = useUser(useDebounce(param, 500));
     return <div className="users-page">
         <SearchPanel param={param} setParam={setParam}/>
-        <Table dataSource={data || []} columns={columns} loading={isLoading}/>
+        <Table dataSource={tableData || []} columns={columns} loading={isLoading}/>
     </div>
 }

@@ -1,5 +1,6 @@
 package io.pzhu.portal.jwt;
 
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.pzhu.portal.entity.User;
@@ -87,7 +88,8 @@ public class TokenInterceptor implements HandlerInterceptor {
             if (e instanceof ExpiredJwtException) {
                 log.error("token is expired");
                 try {
-                    response.sendError(401, "token is expired");
+                    response.sendError(401);
+
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

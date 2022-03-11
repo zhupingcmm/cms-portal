@@ -20,7 +20,6 @@ const AuthContext = React.createContext<
 AuthContext.displayName = "AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const {} = useLocation()
   const {
     isLoading,
     isIdle,
