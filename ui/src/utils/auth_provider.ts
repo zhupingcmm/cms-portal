@@ -1,6 +1,7 @@
 import { http } from "@src/utils/http";
 import { LOCAL_STORAGE_KEY } from "@src/config";
-import { AuthForm, User } from "@src/context/auth-context";
+import { AuthForm } from "@src/context/auth-context";
+import { User } from "@src/types";
 
 export const isEmpty = (item: object): boolean => {
   return !Object.keys(item).length;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Param, User } from "@src/types";
+import { Param } from "@src/types";
 import {Table } from "antd";
 import { SearchPanel } from "./search-panel";
-import { useDebounce } from "@src/utils/hook.uitl";
+import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
 
 const columns = [

@@ -29,6 +29,7 @@ module.exports = merge(common, {
   devServer: {
     port: 3002,
     open: true,
+    historyApiFallback: true,
     client: {
       overlay: {
         warnings: false,

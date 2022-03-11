@@ -4,6 +4,7 @@ import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
 import { FullPageLoading } from "@src/components/full-page-loading";
 import {User} from "@src/types"
+import { useLocation } from "react-router-dom";
 
 export type AuthForm = Pick<User, "username" | "password">;
 
@@ -19,6 +20,7 @@ const AuthContext = React.createContext<
 AuthContext.displayName = "AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const {} = useLocation()
   const {
     isLoading,
     isIdle,
