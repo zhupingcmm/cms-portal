@@ -1,6 +1,9 @@
 import React from "react";
+import { useAuth } from "./context/auth-context";
 import { PortalRoute } from "./routes";
+import { UnauthenticatedApp } from "./unauthenticated-app";
 
 export const App = () => {
-  return <PortalRoute />;
+  const { user } = useAuth();
+  return <>{user ? <PortalRoute /> : <UnauthenticatedApp />}</>;
 };

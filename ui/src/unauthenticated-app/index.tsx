@@ -7,10 +7,12 @@ export const UnauthenticatedApp = () => {
 
   return (
     <div className="cardContainer">
-       <Card className="shadowCard">
-        {isRegister ? <Register/> : <Login/>}
-        <Button type={"link"} onClick={() => setIsRegister(!isRegister)}>{isRegister ? 'change to login' : 'change to register'}</Button>
-       </Card>
+      <Card className="shadowCard">
+        {isRegister ? <Register /> : <Login />}
+        <Button type={"link"} onClick={() => setIsRegister(!isRegister)}>
+          {isRegister ? "change to login" : "change to register"}
+        </Button>
+      </Card>
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Param } from "@src/types";
-import { Table } from "antd";
+import { Menu, PageHeader, Table, Dropdown } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
+import { useAuth } from "@src/context/auth-context";
 
 const columns = [
   {
@@ -27,12 +28,36 @@ const columns = [
     key: "department",
   },
 ];
+const menu = (
+  <Menu>
+    <Menu.Item>aa</Menu.Item>
+  </Menu>
+);
 
 export const UsersPage = () => {
+  const { user, logout } = useAuth();
   const [param, setParam] = useState<Param>({ key: "username", value: "" });
   const { tableData, isLoading } = useUser(useDebounce(param, 500));
   return (
     <div className="users-page">
+      <div className="user-info">
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item onClick={logout}>logout</Menu.Item>
+            </Menu>
+          }
+        >
+          <a
+          // target="_blank"
+          // rel="noopener noreferrer"
+          // href="https://www.aliyun.com"
+          >
+            {user?.username}
+          </a>
+        </Dropdown>
+      </div>
+
       <SearchPanel param={param} setParam={setParam} />
       <Table
         dataSource={tableData || []}

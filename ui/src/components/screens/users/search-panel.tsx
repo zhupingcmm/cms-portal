@@ -30,7 +30,7 @@ export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
     <Form layout="inline">
       <Form.Item>
         <Input
-          placeholder="input string"
+          placeholder="search"
           onChange={(e) => {
             setParam({
               ...param,
