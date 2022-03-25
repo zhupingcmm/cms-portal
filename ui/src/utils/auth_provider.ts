@@ -32,4 +32,14 @@ export const login = (authForm: AuthForm) => {
     });
 };
 
+export const register = (authForm: AuthForm) => {
+  return http("user", { method: "POST", data: authForm})
+          .then(async (res) => {
+            return handleResponse(res);
+          })
+          .catch((e) => {
+            return Promise.reject(e);
+          })
+}
+
 export const logout = async () => removeToken();

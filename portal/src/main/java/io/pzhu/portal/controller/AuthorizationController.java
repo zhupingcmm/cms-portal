@@ -41,8 +41,9 @@ public class AuthorizationController {
             if (ObjectUtils.isEmpty(user)) {
                 // user is not exit
                 log.warn("{} is not found ", request.getUsername());
-                PortalException e = new PortalException(ExceptionEnum.UNAUTHORIZED);
-                return ResponseEntity.status(e.getExceptionEnum().getCode()).body(new ExceptionResult(e.getExceptionEnum()));
+                PortalException e = new PortalException(ExceptionEnum.INVALID_USER);
+                return ResponseEntity.badRequest().body(new ExceptionResult(e.getExceptionEnum()));
+//                return ResponseEntity.status(e.getExceptionEnum().getCode()).body(new ExceptionResult(e.getExceptionEnum()));
 //                throw new PortalException(ExceptionEnum.UNAUTHORIZED);
 //                return ResponseEntity.notFound().build();
             }

@@ -4,13 +4,13 @@ import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
 import { FullPageLoading } from "@src/components/full-page-loading";
 import { User } from "@src/types";
-import { useLocation } from "react-router-dom";
 
 export type AuthForm = Pick<User, "username" | "password">;
 
 const AuthContext = React.createContext<
   | {
       login: (form: AuthForm) => Promise<void>;
+      register: (from: AuthForm) => Promise<void>;
       logout: () => Promise<void>;
       user: User | null;
     }
@@ -42,13 +42,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [bootstrapUser]);
 
   const login = (form: AuthForm) => auth.login(form).then(setUser);
+  const register = (from: AuthForm) => auth.register(from).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
 
   if (isLoading || isIdle) {
     return <FullPageLoading />;
   }
   return (
-    <AuthContext.Provider value={{ login, logout, user }}>
+    <AuthContext.Provider value={{ login, logout, register, user }}>
       {children}
     </AuthContext.Provider>
   );

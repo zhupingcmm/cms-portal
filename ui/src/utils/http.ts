@@ -46,7 +46,8 @@ export const http = (
       }
     })
     .catch((e: Error) => {
-      redirect("/error");
+      // redirect("/error");
+      return Promise.reject(e);
     });
 };
 
