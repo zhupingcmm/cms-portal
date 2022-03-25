@@ -11,7 +11,7 @@ export const PortalRoute = () => {
       <Routes>
         <Route path="/" element={<UnauthenticatedApp />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/error" element={<ErrorPage/>}/>
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );

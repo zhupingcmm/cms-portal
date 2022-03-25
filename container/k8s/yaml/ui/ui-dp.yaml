@@ -1,19 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cms-portal-ui-deploy
+  name: prometheus-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cms-portal-ui
+      app: prometheus-test
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
       labels:
-        app: cms-portal-ui
+        app: prometheus-test
     spec:
       containers:
-        - name: cms-portal-ui
-          image: pingzhu/cms-portal-ui:1.1.1
+        - name: prometheus-test
+          image: pingzhu/prometheus-test:1.0.1
           ports:
-            - containerPort: 3002
+            - containerPort: 3000

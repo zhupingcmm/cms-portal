@@ -2,7 +2,7 @@ const { merge } = require("webpack-merge");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 const common = require("./webpack.common.js");
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const env = dotenv.config().parsed;
 const envKeys = Object.keys(env).reduce((prev, next) => {
@@ -13,7 +13,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 module.exports = merge(common, {
   mode: "production",
   plugins: [
-    new webpack.DefinePlugin(envKeys), 
+    new webpack.DefinePlugin(envKeys),
     // new BundleAnalyzerPlugin()
   ],
 });

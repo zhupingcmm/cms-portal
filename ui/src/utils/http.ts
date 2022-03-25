@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 import { GET } from "@src/config";
 import * as qs from "qs";
-import { useAuth } from '@src/context/auth-context';
-import { removeToken } from './auth_provider';
+import { useAuth } from "@src/context/auth-context";
+import { removeToken } from "./auth_provider";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 interface Config extends RequestInit {
@@ -24,36 +24,42 @@ export const http = (
   };
 
   if (config.method.toUpperCase() === GET) {
-    endpoint += `?${qs.stringify( data)}`;
+    endpoint += `?${qs.stringify(data)}`;
   } else {
     config.body = JSON.stringify(data);
   }
 
-  return window.fetch(`${apiUrl}/${endpoint}`, config).then(async (res) => {
-    // 认证失败（包括：token 过期， 用户名密码不对）
-    if (res.status === 401 && !res.ok) {
-      removeToken();
-      redirect('/error');
-      return;
-    }
-    const data = await res.json();
-    if (res.ok) {
-      return data;
-    } else {
-      return Promise.reject(data);
-    }
-  }).catch((e: Error) => {
-    redirect('/error');
-  });
+  return window
+    .fetch(`${apiUrl}/${endpoint}`, config)
+    .then(async (res) => {
+      // 认证失败（包括：token 过期， 用户名密码不对）
+      if (res.status === 401 && !res.ok) {
+        removeToken();
+        redirect("/error");
+        return;
+      }
+      const data = await res.json();
+      if (res.ok) {
+        return data;
+      } else {
+        return Promise.reject(data);
+      }
+    })
+    .catch((e: Error) => {
+      redirect("/error");
+    });
 };
 
-export const useHttp  = () => {
+export const useHttp = () => {
   const { user } = useAuth();
-  return useCallback((...[endpoint, config]: Parameters<typeof http>) => {
-    return http(endpoint, {...config, token: user?.token})
-  }, [user?.token])
-}
+  return useCallback(
+    (...[endpoint, config]: Parameters<typeof http>) => {
+      return http(endpoint, { ...config, token: user?.token });
+    },
+    [user?.token]
+  );
+};
 
 export const redirect = (contextPath: string) => {
   window.location.href = contextPath;
-}
+};

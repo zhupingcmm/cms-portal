@@ -3,7 +3,7 @@ import * as auth from "@src/utils/auth_provider";
 import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
 import { FullPageLoading } from "@src/components/full-page-loading";
-import {User} from "@src/types"
+import { User } from "@src/types";
 import { useLocation } from "react-router-dom";
 
 export type AuthForm = Pick<User, "username" | "password">;

@@ -1,10 +1,10 @@
 {
-    "appenders": {
-      "out": {
-        "type": "stdout"
-      }
-    },
-    "categories": {
-      "default": { "appenders": [ "out" ], "level": "debug" }
+  "appenders": {
+    "out": {
+      "type": "stdout"
     }
+  },
+  "categories": {
+    "default": { "appenders": ["out"], "level": "debug" }
   }
+}
