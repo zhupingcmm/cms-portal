@@ -3,10 +3,15 @@ import "./style/index.scss";
 import "antd/dist/antd.css";
 import { AppProviders } from "@src/context";
 import { App } from "@src/app";
+import { ErrorBoundary } from "./components/error-boundary";
+import { ErrorPage } from "./components/screens/error-page";
+// import { ErrorPage } from "./components/screens/error-page";
 
 render(
   <AppProviders>
-    <App />
+    <ErrorBoundary fallbackRender={ErrorPage}>
+      <App />
+    </ErrorBoundary>
   </AppProviders>,
   document.getElementById("root")
 );
