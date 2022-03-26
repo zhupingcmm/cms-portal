@@ -1,4 +1,3 @@
-import { CustomerError } from "@src/types";
 import { Typography } from "antd";
 import React from "react";
 

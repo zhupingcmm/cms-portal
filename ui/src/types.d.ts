@@ -4,7 +4,7 @@ export interface User {
   token: string;
   department: string;
   email: string;
-  id: string;
+  id: number;
 }
 
 export interface Param {

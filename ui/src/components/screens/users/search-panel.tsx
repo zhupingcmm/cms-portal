@@ -28,7 +28,7 @@ interface SearchPanelProps {
 export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
   return (
     <Form layout="inline">
-      <Form.Item>
+      <Form.Item className="select-search">
         <Input
           placeholder="search by username"
           onChange={(e) => {

@@ -7,7 +7,7 @@ import { Param, User } from "@src/types";
 import { cleanObject } from "@src/utils";
 
 interface TableData extends User {
-  key: string;
+  key: number;
 }
 
 export const useUser = (param: Param) => {
@@ -27,8 +27,6 @@ export const useUser = (param: Param) => {
   }, [data]);
 
   useEffect(() => {
-    // const result = { [param.key]: param.value };
-    console.log("param::", param);
     const data = cleanObject({ ...param });
     run(client("users", { data }));
   }, [param]);
