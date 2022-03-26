@@ -7,7 +7,6 @@ export const PortalRoute = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/error" element={<ErrorPage />} /> */}
       </Routes>
     </BrowserRouter>
   );

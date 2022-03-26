@@ -4,10 +4,8 @@ import { Register } from "./register";
 import { Login } from "./login";
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
-  const abc: any = 5;
   return (
     <div className="cardContainer">
-      {abc.abc()}
       <Card className="shadowCard">
         {isRegister ? <Register /> : <Login />}
         <Divider />

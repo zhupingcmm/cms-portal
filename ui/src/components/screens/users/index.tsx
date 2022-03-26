@@ -5,6 +5,7 @@ import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
 import { useAuth } from "@src/context/auth-context";
+import { useDocumentTitle } from "@src/components/hook.util";
 
 const columns = [
   {
@@ -38,6 +39,7 @@ export const UsersPage = () => {
   const { user, logout } = useAuth();
   const [param, setParam] = useState<Param>({ key: "username", value: "" });
   const { tableData, isLoading } = useUser(useDebounce(param, 500));
+  useDocumentTitle("用户信息", false);
   return (
     <div className="users-page">
       <div className="user-info">
