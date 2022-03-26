@@ -5,8 +5,9 @@ import { NavigationBar } from "./navigation-bar";
 export const Home = () => {
   return (
     <div>
-      <NavigationBar />
-      <UsersPage />
+      {/* <NavigationBar /> */}
+      {/* <UsersPage /> */}
+      home page
     </div>
   );
 };

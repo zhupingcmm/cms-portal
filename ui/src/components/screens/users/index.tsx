@@ -6,6 +6,7 @@ import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
 import { useAuth } from "@src/context/auth-context";
 import { useDocumentTitle } from "@src/components/hook.util";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -63,7 +64,32 @@ export const UsersPage = () => {
       <SearchPanel param={param} setParam={setParam} />
       <Table
         dataSource={tableData || []}
-        columns={columns}
+        columns={[
+          {
+            title: "ID",
+            dataIndex: "id",
+            key: "id",
+          },
+          {
+            title: "Username",
+            // dataIndex: "username",
+            key: "username",
+            render(value, user) {
+              console.log("user info", user);
+              return <Link to={String(user.id)}>{user.username}</Link>;
+            },
+          },
+          {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+          },
+          {
+            title: "Department",
+            dataIndex: "department",
+            key: "department",
+          },
+        ]}
         loading={isLoading}
       />
     </div>
