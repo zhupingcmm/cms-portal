@@ -27,6 +27,7 @@ export const useAsync = <D>(
     ...initState,
   };
   const [state, setState] = useState<State<D>>(initialState);
+  const [retry, setRetry] = useState(() => () => {});
 
   const setError = useCallback(
     (e: CustomerError) => {
@@ -51,10 +52,16 @@ export const useAsync = <D>(
   );
 
   const run = useCallback(
-    (promise: Promise<D>) => {
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
       if (!promise || !promise.then) {
         throw new Error("please input promise!!!");
       }
+
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig.retry(), runConfig);
+        }
+      });
 
       setState({ ...state, stat: "loading" });
       return promise
@@ -79,6 +86,7 @@ export const useAsync = <D>(
     run,
     setData,
     setError,
+    retry,
     ...state,
   };
 };

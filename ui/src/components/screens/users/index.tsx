@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Param } from "@src/types";
-import { Menu, PageHeader, Table, Dropdown } from "antd";
+import { Menu, PageHeader, Table, Dropdown, Button } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
@@ -11,9 +11,8 @@ import { useUrlQueryParam } from "@src/utils/url";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
-  const { user, logout } = useAuth();
   const [param, setParam] = useUrlQueryParam(["username"]);
-  const { tableData, isLoading } = useUser(useDebounce(param, 500));
+  const { tableData, isLoading, retry } = useUser(useDebounce(param, 500));
   return (
     <div className="users-page">
       <SearchPanel param={param} setParam={setParam} />

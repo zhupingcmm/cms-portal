@@ -11,7 +11,7 @@ interface TableData extends User {
 }
 
 export const useUser = (param: Param) => {
-  const { run, data, isSuccess, isLoading } = useAsync<User[]>();
+  const { run, data, isSuccess, isLoading, ...otherProps } = useAsync<User[]>();
   const [tableData, setTableData] = useState<TableData[]>([]);
   const client = useHttp();
 
@@ -28,8 +28,9 @@ export const useUser = (param: Param) => {
 
   useEffect(() => {
     const data = cleanObject({ ...param });
-    run(client("users", { data }));
+    const fetchUsers = () => client("users", { data });
+    run(fetchUsers(), { retry: fetchUsers });
   }, [param]);
 
-  return { tableData, isLoading, isSuccess };
+  return { tableData, isLoading, isSuccess, ...otherProps };
 };
