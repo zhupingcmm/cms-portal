@@ -7,6 +7,7 @@ import { useUser } from "./hook.util";
 import { useAuth } from "@src/context/auth-context";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
+import { useUrlQueryParam } from "@src/utils/url";
 
 const columns = [
   {
@@ -41,6 +42,9 @@ export const UsersPage = () => {
   const [param, setParam] = useState<Param>({ key: "username", value: "" });
   const { tableData, isLoading } = useUser(useDebounce(param, 500));
   useDocumentTitle("用户信息", false);
+  const [test] = useUrlQueryParam(["id", "name"]);
+  console.log(test);
+
   return (
     <div className="users-page">
       <div className="user-info">
@@ -75,7 +79,6 @@ export const UsersPage = () => {
             // dataIndex: "username",
             key: "username",
             render(value, user) {
-              console.log("user info", user);
               return <Link to={String(user.id)}>{user.username}</Link>;
             },
           },
