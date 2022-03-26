@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Typography } from "antd";
 import { useAuth } from "@src/context/auth-context";
+import { useAsync } from "@src/utils/use-async";
 
 interface CustomerError extends Error {
   msg?: string;
 }
 export const Register = () => {
   const { register } = useAuth();
+  const { run, isLoading } = useAsync();
   const [error, setError] = useState<CustomerError | null>(null);
 
   const handleSubmit = async ({
@@ -17,13 +19,12 @@ export const Register = () => {
     username: string;
     password: string;
   }) => {
-    console.log(values, cpassword);
     if (cpassword !== values.password) {
       setError(new Error("please input the same password"));
       return;
     }
     try {
-      const user = await register(values);
+      run(register(values));
     } catch (e: any) {
       setError(e);
     }
@@ -55,7 +56,12 @@ export const Register = () => {
         >
           <Input placeholder="confirm password" id={"cpassword"} />
         </Form.Item>
-        <Button htmlType="submit" type="primary" className="full-button">
+        <Button
+          loading={isLoading}
+          htmlType="submit"
+          type="primary"
+          className="full-button"
+        >
           Register
         </Button>
       </Form>
