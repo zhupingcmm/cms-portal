@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Typography } from "antd";
 import { useAuth } from "@src/context/auth-context";
+import { useAsync } from "@src/utils/use-async";
+import { CustomerError } from "@src/types";
 
-interface CustomerError extends Error {
-  msg: string;
-}
 export const Login = () => {
   const { login } = useAuth();
+  const { run, isLoading } = useAsync();
   const [error, setError] = useState<CustomerError | null>(null);
 
   const handleSubmit = async (values: {
@@ -14,7 +14,7 @@ export const Login = () => {
     password: string;
   }) => {
     try {
-      const user = await login(values);
+      run(login(values));
     } catch (e: any) {
       setError(e);
     }
@@ -37,7 +37,12 @@ export const Login = () => {
         >
           <Input placeholder="password" id={"password"} />
         </Form.Item>
-        <Button htmlType="submit" type="primary">
+        <Button
+          loading={isLoading}
+          htmlType="submit"
+          type="primary"
+          className="full-button"
+        >
           Login
         </Button>
       </Form>

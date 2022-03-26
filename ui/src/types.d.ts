@@ -11,3 +11,7 @@ export interface Param {
   key: string;
   value: string;
 }
+
+interface CustomerError extends Error {
+  msg: string;
+}

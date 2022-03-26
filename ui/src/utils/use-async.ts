@@ -1,9 +1,10 @@
+import { CustomerError } from "@src/types";
 import { useState, useCallback } from "react";
 
 interface State<D> {
   data: D | null;
   stat: "idle" | "loading" | "success" | "error";
-  error: Error | null;
+  error: CustomerError | null;
 }
 
 const defaultInitState: State<null> = {
@@ -12,7 +13,15 @@ const defaultInitState: State<null> = {
   error: null,
 };
 
-export const useAsync = <D>(initState?: State<D>) => {
+const defaultConfig = {
+  throwOnError: false,
+};
+
+export const useAsync = <D>(
+  initState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const config = { ...defaultConfig, initialConfig };
   const initialState = {
     ...defaultInitState,
     ...initState,
@@ -20,7 +29,7 @@ export const useAsync = <D>(initState?: State<D>) => {
   const [state, setState] = useState<State<D>>(initialState);
 
   const setError = useCallback(
-    (e: Error) => {
+    (e: CustomerError) => {
       setState({
         data: null,
         stat: "error",
@@ -55,6 +64,7 @@ export const useAsync = <D>(initState?: State<D>) => {
         })
         .catch((e) => {
           setError(e);
+          if (config.throwOnError) return Promise.reject(e);
           return e;
         });
     },

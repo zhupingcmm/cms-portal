@@ -4,6 +4,7 @@ import { http } from "@src/utils/http";
 import { useAsync } from "@src/utils/use-async";
 import { FullPageLoading } from "@src/components/full-page-loading";
 import { User } from "@src/types";
+import { ErrorPage } from "@src/components/screens/error-page";
 
 export type AuthForm = Pick<User, "username" | "password">;
 
@@ -26,6 +27,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     run,
     data: user,
     setData: setUser,
+    isError,
+    error,
   } = useAsync<User | null>();
 
   const bootstrapUser = useCallback(async () => {
@@ -47,6 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   if (isLoading || isIdle) {
     return <FullPageLoading />;
+  }
+
+  if (isError) {
+    return <ErrorPage error={error} />;
   }
   return (
     <AuthContext.Provider value={{ login, logout, register, user }}>
