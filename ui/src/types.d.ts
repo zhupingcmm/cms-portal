@@ -8,8 +8,7 @@ export interface User {
 }
 
 export interface Param {
-  key: string;
-  value: string;
+  username: string;
 }
 
 interface CustomerError extends Error {

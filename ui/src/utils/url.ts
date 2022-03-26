@@ -1,8 +1,5 @@
 import { useMemo } from "react";
 import { useSearchParams, URLSearchParamsInit } from "react-router-dom";
-
-const a = ["jack", 12, { a: "a" }] as const;
-
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   return [

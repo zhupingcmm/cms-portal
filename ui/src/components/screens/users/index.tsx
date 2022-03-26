@@ -39,11 +39,9 @@ const menu = (
 
 export const UsersPage = () => {
   const { user, logout } = useAuth();
-  const [param, setParam] = useState<Param>({ key: "username", value: "" });
+  const [param, setParam] = useUrlQueryParam(["username"]);
   const { tableData, isLoading } = useUser(useDebounce(param, 500));
   useDocumentTitle("用户信息", false);
-  const [test] = useUrlQueryParam(["id", "name"]);
-  console.log(test);
 
   return (
     <div className="users-page">

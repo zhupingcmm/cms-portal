@@ -30,16 +30,16 @@ export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
     <Form layout="inline">
       <Form.Item>
         <Input
-          placeholder="search"
+          placeholder="search by username"
           onChange={(e) => {
             setParam({
               ...param,
-              value: e.target.value,
+              username: e.target.value,
             });
           }}
         />
       </Form.Item>
-      <Form.Item>
+      {/* <Form.Item>
         <Select
           defaultValue={"username"}
           style={{ width: 120 }}
@@ -56,7 +56,7 @@ export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
             </Option>
           ))}
         </Select>
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 };

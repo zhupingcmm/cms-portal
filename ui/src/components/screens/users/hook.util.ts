@@ -27,8 +27,9 @@ export const useUser = (param: Param) => {
   }, [data]);
 
   useEffect(() => {
-    const result = { [param.key]: param.value };
-    const data = cleanObject(result);
+    // const result = { [param.key]: param.value };
+    console.log("param::", param);
+    const data = cleanObject({ ...param });
     run(client("users", { data }));
   }, [param]);
 
