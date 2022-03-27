@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { Param } from "@src/types";
-import { Table } from "antd";
+import { Button, Dropdown, Menu, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
 import { useUser } from "./hook.util";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
 import { useUrlQueryParam } from "@src/utils/url";
+import { UserHeader } from "./user-header";
+import { UserModel } from "./user-model";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
   const [param, setParam] = useUrlQueryParam(["username"]);
   const { tableData, isLoading, retry } = useUser(useDebounce(param, 500));
+  const [modalVisible, setModalVisible] = useState(false);
+  const [title, setTitle] = useState("");
   return (
     <div className="users-page">
+      <UserHeader setModalVisible={setModalVisible} setTitle={setTitle} />
       <SearchPanel param={param} setParam={setParam} />
       <Table
         dataSource={tableData || []}
@@ -41,9 +46,25 @@ export const UsersPage = () => {
             dataIndex: "department",
             key: "department",
           },
+          {
+            render(value, user) {
+              return (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item>编辑</Menu.Item>
+                    </Menu>
+                  }
+                >
+                  <Button type="link">...</Button>
+                </Dropdown>
+              );
+            },
+          },
         ]}
         loading={isLoading}
       />
+      <UserModel visible={modalVisible} setModalVisible={setModalVisible} />
     </div>
   );
 };

@@ -34,3 +34,13 @@ export const useUser = (param: Param) => {
 
   return { tableData, isLoading, isSuccess, ...otherProps };
 };
+
+
+export const useAddUser = (user: User) => {
+  const { run, isLoading, ...others } = useAsync<User>();
+  const client = useHttp();
+
+  useEffect(() => {
+    
+  }, [])
+}

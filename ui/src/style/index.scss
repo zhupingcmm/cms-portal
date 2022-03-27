@@ -54,6 +54,10 @@ html body #root {
     margin: 8rem 0;
     justify-content: center;
   }
+  .user-header {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .user-info {
