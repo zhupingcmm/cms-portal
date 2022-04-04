@@ -11,7 +11,7 @@ import { UserHeader } from "./user-header";
 import { UserModel } from "./user-model";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/store";
-import { handleCloseModel, handleOpenModel } from "@src/action";
+import { close, open } from "@src/reducer/model";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
@@ -24,7 +24,7 @@ export const UsersPage = () => {
   return (
     <div className="users-page">
       <UserHeader
-        open={() => dispatch(handleOpenModel())}
+        open={() => dispatch(open())}
         setTitle={setTitle}
       />
       <SearchPanel param={param} setParam={setParam} />
@@ -72,7 +72,7 @@ export const UsersPage = () => {
         ]}
         loading={isLoading}
       />
-      <UserModel visible={status} close={() => dispatch(handleCloseModel())} />
+      <UserModel visible={status} close={() => dispatch(close())} />
     </div>
   );
 };

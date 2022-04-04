@@ -1,1 +1,1 @@
-export { modelReducer as modelReducer } from "./model";
+export { modelSlice as modelSlice } from "./model";
