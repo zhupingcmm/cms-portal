@@ -9,16 +9,24 @@ import { Link } from "react-router-dom";
 import { useUrlQueryParam } from "@src/utils/url";
 import { UserHeader } from "./user-header";
 import { UserModel } from "./user-model";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@src/store";
+import { handleCloseModel, handleOpenModel } from "@src/action";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
   const [param, setParam] = useUrlQueryParam(["username"]);
   const { tableData, isLoading, retry } = useUser(useDebounce(param, 500));
-  const [modalVisible, setModalVisible] = useState(false);
   const [title, setTitle] = useState("");
+  const status = useSelector((state: RootState) => state.modelReducer.status);
+  const dispatch = useDispatch();
+
   return (
     <div className="users-page">
-      <UserHeader setModalVisible={setModalVisible} setTitle={setTitle} />
+      <UserHeader
+        open={() => dispatch(handleOpenModel())}
+        setTitle={setTitle}
+      />
       <SearchPanel param={param} setParam={setParam} />
       <Table
         dataSource={tableData || []}
@@ -64,7 +72,7 @@ export const UsersPage = () => {
         ]}
         loading={isLoading}
       />
-      <UserModel visible={modalVisible} setModalVisible={setModalVisible} />
+      <UserModel visible={status} close={() => dispatch(handleCloseModel())} />
     </div>
   );
 };

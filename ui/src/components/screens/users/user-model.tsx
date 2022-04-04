@@ -4,21 +4,17 @@ import React from "react";
 
 interface UserModelProps extends DrawerProps {
   user?: User;
-  setModalVisible: (b: boolean) => void;
+  close: () => void;
 }
 
-export const UserModel = ({
-  user,
-  setModalVisible,
-  ...restProps
-}: UserModelProps) => {
+export const UserModel = ({ user, close, ...restProps }: UserModelProps) => {
   return (
     <Drawer
       title="用户信息"
-      onClose={() => setModalVisible(false)}
+      onClose={() => close()}
       extra={
         <Space>
-          <Button onClick={() => setModalVisible(false)}>取消</Button>
+          <Button onClick={() => close()}>取消</Button>
           <Button>保存</Button>
         </Space>
       }

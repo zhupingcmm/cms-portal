@@ -2,16 +2,16 @@ import React, { useCallback } from "react";
 import { Button, Typography } from "antd";
 
 export const UserHeader = ({
-  setModalVisible,
+  open,
   setTitle,
 }: {
-  setModalVisible: (p: boolean) => void;
+  open: () => void;
   setTitle: (t: string) => void;
 }) => {
   const handleClick = useCallback(() => {
-    setModalVisible(true);
+    open();
     setTitle("新建用户");
-  }, [setModalVisible, setTitle]);
+  }, [open, setTitle]);
   return (
     <div className="user-header">
       <Typography.Title level={3}>用户信息</Typography.Title>
