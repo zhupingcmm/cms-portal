@@ -3,7 +3,7 @@ import { Param } from "@src/types";
 import { Button, Dropdown, Menu, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
-import { useUser } from "./hook.util";
+import { useUser, useUserModel } from "./hook.util";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
 import { useUrlQueryParam } from "@src/utils/url";
@@ -20,13 +20,11 @@ export const UsersPage = () => {
   const [title, setTitle] = useState("");
   const status = useSelector((state: RootState) => state.modelReducer.status);
   const dispatch = useDispatch();
+  const { open, close, openUserModel } = useUserModel();
 
   return (
     <div className="users-page">
-      <UserHeader
-        open={() => dispatch(open())}
-        setTitle={setTitle}
-      />
+      <UserHeader open={open} setTitle={setTitle} />
       <SearchPanel param={param} setParam={setParam} />
       <Table
         dataSource={tableData || []}
@@ -72,7 +70,7 @@ export const UsersPage = () => {
         ]}
         loading={isLoading}
       />
-      <UserModel visible={status} close={() => dispatch(close())} />
+      <UserModel visible={openUserModel} close={close} />
     </div>
   );
 };
