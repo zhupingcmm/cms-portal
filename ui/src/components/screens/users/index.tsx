@@ -3,7 +3,7 @@ import { Param } from "@src/types";
 import { Button, Dropdown, Menu, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
-import { useUser, useUserModel } from "./hook.util";
+import { useUsers, useUserModel, useDeleteUser } from "./hook.util";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
 import { useUrlQueryParam } from "@src/utils/url";
@@ -16,11 +16,16 @@ import { close, open } from "@src/reducer/model";
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
   const [param, setParam] = useUrlQueryParam(["username"]);
-  const { tableData, isLoading, retry } = useUser(useDebounce(param, 500));
+  const { tableData, isLoading } = useUsers(useDebounce(param, 500));
   const [title, setTitle] = useState("");
   const status = useSelector((state: RootState) => state.modelReducer.status);
   const dispatch = useDispatch();
-  const { open, close, openUserModel } = useUserModel();
+  const { open, close, openUserModel, startEdit } = useUserModel();
+  const { mutateAsync } = useDeleteUser();
+
+  const handleDelete = (id: number) => {
+    mutateAsync(id);
+  };
 
   return (
     <div className="users-page">
@@ -54,11 +59,15 @@ export const UsersPage = () => {
           },
           {
             render(value, user) {
+              const { id } = value;
               return (
                 <Dropdown
                   overlay={
                     <Menu>
-                      <Menu.Item>编辑</Menu.Item>
+                      <Menu.Item onClick={() => startEdit(id)}>编辑</Menu.Item>
+                      <Menu.Item onClick={() => handleDelete(id)}>
+                        删除
+                      </Menu.Item>
                     </Menu>
                   }
                 >
@@ -70,7 +79,7 @@ export const UsersPage = () => {
         ]}
         loading={isLoading}
       />
-      <UserModel visible={openUserModel} close={close} />
+      <UserModel />
     </div>
   );
 };

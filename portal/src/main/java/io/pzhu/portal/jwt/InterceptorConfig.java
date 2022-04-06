@@ -19,9 +19,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-//                .allowedOrigins("*")
+                .allowedOrigins("*")
 //                .allowCredentials(true)
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .maxAge(3600);
     }
 }

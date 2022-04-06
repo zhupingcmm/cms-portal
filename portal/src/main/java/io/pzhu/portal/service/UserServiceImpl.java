@@ -10,7 +10,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -54,6 +56,35 @@ public class UserServiceImpl implements UserService{
     public List<User> findAll() {
         try {
             return userDao.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User findById(Long id) {
+        try {
+            Optional<User> result =userDao.findById(id);
+            return result.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User updateUser(User user) {
+        try {
+
+            return userDao.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        try {
+            userDao.deleteById(id);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

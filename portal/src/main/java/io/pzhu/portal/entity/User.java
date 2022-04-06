@@ -21,13 +21,13 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "department")

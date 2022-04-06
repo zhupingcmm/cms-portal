@@ -12,6 +12,7 @@ public class UserRequest {
     private String email;
     private String department;
     private String token;
+    private Long id;
 
     public User toUser(){
         return User.builder()
@@ -19,6 +20,7 @@ public class UserRequest {
                 .department(department)
                 .password(password)
                 .email(email)
+                .id(id)
                 .build();
     }
 
