@@ -14,12 +14,9 @@ export const UserModel = () => {
   const { editUser, isLoading, close, openUserModel } = useUserModel();
   const [form] = Form.useForm();
   const useMutateProject = editUser ? useEditUser : useAddUser;
-  const queryKey = useUserQueryKey();
-  const {
-    mutateAsync,
-    error,
-    isLoading: mutateLoading,
-  } = useMutateProject(queryKey);
+  const { mutateAsync, isLoading: mutateLoading } = useMutateProject(
+    useUserQueryKey()
+  );
 
   const closeModal = () => {
     form.resetFields();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Param } from "@src/types";
-import { Button, Dropdown, Menu, Table, Typography } from "antd";
+import { Param, User } from "@src/types";
+import { Button, Dropdown, Menu, Modal, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
 import {
@@ -8,26 +8,32 @@ import {
   useUserModel,
   useDeleteUser,
   useUserSearchParam,
+  useUserQueryKey,
 } from "./hook.util";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
-import { useUrlQueryParam } from "@src/utils/url";
 import { UserHeader } from "./user-header";
 import { UserModel } from "./user-model";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@src/store";
-import { close, open } from "@src/reducer/model";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
   const [param, setParam] = useUserSearchParam();
   const { tableData, isLoading } = useUsers(useDebounce(param, 500));
   const [title, setTitle] = useState("");
-  const { open, close, openUserModel, startEdit } = useUserModel();
-  const { mutateAsync } = useDeleteUser();
+  const { open, startEdit } = useUserModel();
+  const { mutateAsync } = useDeleteUser(useUserQueryKey());
 
-  const handleDelete = (id: number) => {
-    mutateAsync(id);
+  const handleDelete = (user: User) => {
+    const { id, username } = user;
+    Modal.confirm({
+      title: "确认删除",
+      content: `确认删除${username}吗？`,
+      onOk() {
+        mutateAsync(id);
+      },
+      okText: "确认",
+      cancelText: "取消",
+    });
   };
 
   return (
@@ -44,7 +50,6 @@ export const UsersPage = () => {
           },
           {
             title: "Username",
-            // dataIndex: "username",
             key: "username",
             render(value, user) {
               return <Link to={String(user.id)}>{user.username}</Link>;
@@ -68,7 +73,7 @@ export const UsersPage = () => {
                   overlay={
                     <Menu>
                       <Menu.Item onClick={() => startEdit(id)}>编辑</Menu.Item>
-                      <Menu.Item onClick={() => handleDelete(id)}>
+                      <Menu.Item onClick={() => handleDelete(user)}>
                         删除
                       </Menu.Item>
                     </Menu>

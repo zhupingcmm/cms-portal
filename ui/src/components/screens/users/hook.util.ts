@@ -1,3 +1,7 @@
+import {
+  useAddConfig,
+  useDeleteConfig,
+} from "./../../../utils/optimistic-options";
 import { useMemo } from "react";
 import { useHttp } from "./../../../utils/http";
 
@@ -5,7 +9,7 @@ import { Param, User } from "@src/types";
 import { cleanObject } from "@src/utils";
 import { useUrlQueryParam } from "@src/utils/url";
 import { useQuery, useMutation, useQueryClient, QueryKey } from "react-query";
-import { useSearchParams } from "react-router-dom";
+import { useEditConfig } from "@src/utils/optimistic-options";
 
 export const useTableData = (data: User[]) => {
   return useMemo(() => {
@@ -34,57 +38,28 @@ export const useUser = (id: string) => {
   });
 };
 
-export const useAddUser = () => {
+export const useAddUser = (queryKey: QueryKey) => {
   const client = useHttp();
-  const queryClient = useQueryClient();
   return useMutation(
     (params: Partial<User>) => client("user", { data: params, method: "POST" }),
-    {
-      onSuccess: () => queryClient.invalidateQueries("users"),
-    }
+    useAddConfig(queryKey)
   );
 };
 
 export const useEditUser = (queryKey: QueryKey) => {
   const client = useHttp();
-  const queryClient = useQueryClient();
   return useMutation(
     (params: Partial<User>) =>
       client(`user`, { data: params, method: "PATCH" }),
-    {
-      onSuccess: () => queryClient.invalidateQueries(queryKey),
-      onMutate: (target) => {
-        const previousItems = queryClient.getQueryData(queryKey);
-        queryClient.setQueryData(queryKey, (old?: User[]) => {
-          return (
-            old?.map((o) => {
-              if (o.id === target.id) {
-                return { ...o, ...target };
-              }
-              return o;
-            }) || []
-          );
-        });
-        return { previousItems };
-      },
-      onError: (error, variables, context) => {
-        queryClient.setQueryData(
-          queryKey,
-          (context as { previousItems: User[] }).previousItems
-        );
-      },
-    }
+    useEditConfig(queryKey)
   );
 };
 
-export const useDeleteUser = () => {
+export const useDeleteUser = (queryKey: QueryKey) => {
   const client = useHttp();
-  const queryClient = useQueryClient();
   return useMutation(
     (id: number) => client(`user/${id}`, { method: "DELETE" }),
-    {
-      onSuccess: () => queryClient.invalidateQueries("users"),
-    }
+    useDeleteConfig(queryKey)
   );
 };
 
