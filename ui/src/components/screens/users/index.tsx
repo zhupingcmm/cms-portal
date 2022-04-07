@@ -3,7 +3,12 @@ import { Param } from "@src/types";
 import { Button, Dropdown, Menu, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
-import { useUsers, useUserModel, useDeleteUser } from "./hook.util";
+import {
+  useUsers,
+  useUserModel,
+  useDeleteUser,
+  useUserSearchParam,
+} from "./hook.util";
 import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
 import { useUrlQueryParam } from "@src/utils/url";
@@ -15,11 +20,9 @@ import { close, open } from "@src/reducer/model";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);
-  const [param, setParam] = useUrlQueryParam(["username"]);
+  const [param, setParam] = useUserSearchParam();
   const { tableData, isLoading } = useUsers(useDebounce(param, 500));
   const [title, setTitle] = useState("");
-  const status = useSelector((state: RootState) => state.modelReducer.status);
-  const dispatch = useDispatch();
   const { open, close, openUserModel, startEdit } = useUserModel();
   const { mutateAsync } = useDeleteUser();
 

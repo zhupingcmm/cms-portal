@@ -2,13 +2,24 @@ import { User } from "@src/types";
 import { Button, Drawer, DrawerProps, Form, Input, Space, Spin } from "antd";
 import useModal from "antd/lib/modal/useModal";
 import React, { useEffect } from "react";
-import { useAddUser, useEditUser, useUserModel } from "./hook.util";
+import { useSearchParams } from "react-router-dom";
+import {
+  useAddUser,
+  useEditUser,
+  useUserQueryKey,
+  useUserModel,
+} from "./hook.util";
 
 export const UserModel = () => {
   const { editUser, isLoading, close, openUserModel } = useUserModel();
   const [form] = Form.useForm();
   const useMutateProject = editUser ? useEditUser : useAddUser;
-  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
+  const queryKey = useUserQueryKey();
+  const {
+    mutateAsync,
+    error,
+    isLoading: mutateLoading,
+  } = useMutateProject(queryKey);
 
   const closeModal = () => {
     form.resetFields();

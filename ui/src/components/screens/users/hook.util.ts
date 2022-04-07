@@ -4,11 +4,8 @@ import { useHttp } from "./../../../utils/http";
 import { Param, User } from "@src/types";
 import { cleanObject } from "@src/utils";
 import { useUrlQueryParam } from "@src/utils/url";
-import { useQuery, useMutation, QueryKey, useQueryClient } from "react-query";
-
-interface TableData extends User {
-  key: number;
-}
+import { useQuery, useMutation, useQueryClient, QueryKey } from "react-query";
+import { useSearchParams } from "react-router-dom";
 
 export const useTableData = (data: User[]) => {
   return useMemo(() => {
@@ -20,7 +17,7 @@ export const useTableData = (data: User[]) => {
     });
   }, [data]);
 };
-export const useUsers = (param: Param) => {
+export const useUsers = (param: Partial<Param>) => {
   const client = useHttp();
   const { isLoading, isSuccess, data, ...otherProps } = useQuery<User[]>(
     ["users", param],
@@ -48,14 +45,34 @@ export const useAddUser = () => {
   );
 };
 
-export const useEditUser = () => {
+export const useEditUser = (queryKey: QueryKey) => {
   const client = useHttp();
   const queryClient = useQueryClient();
   return useMutation(
     (params: Partial<User>) =>
       client(`user`, { data: params, method: "PATCH" }),
     {
-      onSuccess: () => queryClient.invalidateQueries("users"),
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
+      onMutate: (target) => {
+        const previousItems = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old?: User[]) => {
+          return (
+            old?.map((o) => {
+              if (o.id === target.id) {
+                return { ...o, ...target };
+              }
+              return o;
+            }) || []
+          );
+        });
+        return { previousItems };
+      },
+      onError: (error, variables, context) => {
+        queryClient.setQueryData(
+          queryKey,
+          (context as { previousItems: User[] }).previousItems
+        );
+      },
     }
   );
 };
@@ -92,4 +109,14 @@ export const useUserModel = () => {
     editUser,
     isLoading,
   };
+};
+
+export const useUserSearchParam = () => {
+  const [param, setParam] = useUrlQueryParam(["username"]);
+  return [param, setParam] as const;
+};
+
+export const useUserQueryKey = () => {
+  const [queryKey] = useUserSearchParam();
+  return ["users", queryKey];
 };
