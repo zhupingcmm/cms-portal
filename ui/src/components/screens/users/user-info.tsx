@@ -13,10 +13,10 @@ export const UserInfo = () => {
       <Routes>
         <Route path="/kanban" element={<Kanban />} />
         <Route path="/epic" element={<Epic />} />
-        <Route
+        {/* <Route
           path="*"
           element={<Navigate to={window.location.pathname + "/kanban"} />}
-        />
+        /> */}
       </Routes>
     </div>
   );

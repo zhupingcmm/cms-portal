@@ -13,7 +13,6 @@ export const store = configureStore({
   middleware: new MiddlewareArray().concat(test),
 });
 
-// createListenerMiddleware({});
 export type AppDispatch = typeof store.dispatch;
 
 export type RootState = ReturnType<typeof store.getState>;
