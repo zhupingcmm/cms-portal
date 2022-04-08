@@ -8,7 +8,7 @@ export const NavigationBar = () => {
     return window.location.pathname.replace("/", "");
   }, []);
   const handleClick = useCallback((e: MenuInfo) => {
-    window.location.href = e.key;
+    window.location.href = window.location.origin + "/" + e.key;
   }, []);
 
   return (

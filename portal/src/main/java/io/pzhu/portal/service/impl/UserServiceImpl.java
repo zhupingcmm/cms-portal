@@ -1,8 +1,9 @@
-package io.pzhu.portal.service;
+package io.pzhu.portal.service.impl;
 
 import io.pzhu.portal.dao.UserDao;
 import io.pzhu.portal.entity.User;
 import io.pzhu.portal.jwt.JwtConfig;
+import io.pzhu.portal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @CacheConfig(cacheNames = "users")
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 

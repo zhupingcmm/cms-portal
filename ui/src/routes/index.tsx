@@ -14,7 +14,7 @@ export const AuthenticatedApp = () => {
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id/*" element={<UserInfo />} />
-          {/* <Route path="*" element={<Navigate to={"/"} />} /> */}
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       </BrowserRouter>
     </>
