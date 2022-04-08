@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "task")
+@Table(name = "task_type")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Task {
+public class TaskType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,16 +21,4 @@ public class Task {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "user_id")
-    private Long userId;
-
-    @Column(name = "board_id")
-    private Long boardId;
-
-    @Column(name = "note")
-    private String note;
-
-    @Column(name = "type_id")
-    private Long typeId;
 }

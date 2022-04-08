@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -29,6 +30,13 @@ public class TaskController {
     public ResponseEntity<Task> addTask (@RequestBody TaskRequest taskRequest) {
         log.info("Try to add a task {}", taskRequest.getName());
         return ResponseEntity.ok(taskService.addTask(taskRequest.toTask()));
+    }
+
+    @GetMapping("/tasks/{userid}")
+    public ResponseEntity<List<Task>> getTaskByUserId (@PathVariable String userid) {
+        List<Task> tasks = taskService.findAllTasks();
+        List<Task> result = tasks.stream().filter(task -> task.getUserId().equals(Long.valueOf(userid))).collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 
 }

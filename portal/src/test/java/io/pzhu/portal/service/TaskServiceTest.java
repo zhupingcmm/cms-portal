@@ -23,9 +23,11 @@ public class TaskServiceTest {
     @Test
     public void addTask() {
        Task task =  taskService.addTask(Task.builder()
-                        .boardId(1L)
+                        .boardId(2L)
                         .userId(1L)
-                        .name("ut task")
+                        .name("pcoe task")
+                       .typeId(2L)
+                       .note("pcoe task")
                         .build());
 
        assert (task.getName()).equals("ut test");

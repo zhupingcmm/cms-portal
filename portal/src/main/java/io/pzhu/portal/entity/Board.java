@@ -23,4 +23,12 @@ public class Board implements Serializable {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Route, Routes, Navigate } from "react-router-dom";
 import { Epic } from "./epic";
-import { Kanban } from "./kanban";
+import { KanBan } from "./kanban";
 
 export const UserInfo = () => {
   return (
@@ -9,7 +9,7 @@ export const UserInfo = () => {
       <Link to={"kanban"}>看板</Link>
       <Link to={"epic"}>任务组</Link>
       <Routes>
-        <Route path="/kanban" element={<Kanban />} />
+        <Route path="/kanban" element={<KanBan />} />
         <Route path="/epic" element={<Epic />} />
         <Route
           path="*"

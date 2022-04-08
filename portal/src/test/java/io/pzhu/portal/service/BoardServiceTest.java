@@ -15,7 +15,9 @@ public class BoardServiceTest {
     public void addBoard(){
         Board board = boardService.addBoard(Board.builder()
                         .name("complete")
-                .build());
+//                        .userId(1L)
+                        .type("oob")
+                        .build());
         assert (board.getName()).equals("complete");
     }
 }
