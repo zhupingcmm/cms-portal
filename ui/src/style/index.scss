@@ -9,6 +9,8 @@ html {
 }
 html body #root {
   width: 100vw;
+  height: 100vh;
+  // display: flex;
 }
 
 .cardContainer {
@@ -97,5 +99,15 @@ html body #root {
     flex-direction: column;
     padding: 0.7rem 0.7rem 1rem;
     margin-right: 1.5rem;
+  }
+}
+
+.user-info-container {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  height: calc(95vh);
+  .aside {
+    background-color: rgb(244, 245, 247);
+    display: flex;
   }
 }

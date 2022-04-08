@@ -12,7 +12,12 @@ export const NavigationBar = () => {
   }, []);
 
   return (
-    <Menu mode={"horizontal"} selectedKeys={[initKey]} onClick={handleClick}>
+    <Menu
+      mode={"horizontal"}
+      selectedKeys={[initKey]}
+      onClick={handleClick}
+      style={{ lineHeight: "5vh" }}
+    >
       <Menu.Item
         key={"home"}
         icon={<img src={mf} alt="" style={{ width: 80 }} />}
