@@ -15,10 +15,16 @@ public class BoardRequest {
 
     private String name;
 
+    private String type;
+
+    private Long userId;
+
     public Board toBoard () {
         return Board.builder()
                 .id(id)
                 .name(name)
+                .type(type)
+                .userId(userId)
                 .build();
     }
 }

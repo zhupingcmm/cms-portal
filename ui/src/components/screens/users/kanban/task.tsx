@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { useTasks, useTaskTypes, useUserIdInUrl } from "./hook.util";
 import bugIcon from "@src/assets/bug.svg";
 import featureIcon from "@src/assets/feature.svg";
+import { CreateTask } from "./create-task";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskTypes } = useTaskTypes();
@@ -22,14 +23,17 @@ export const Task = ({ boardId }: { boardId: number }) => {
 
   return (
     <div>
-      {tasks?.map((task, index) => {
-        return (
-          <Card key={index}>
-            <span>{task?.name}</span>
-            <TaskTypeIcon id={task?.id} />
-          </Card>
-        );
-      })}
+      <>
+        {tasks?.map((task, index) => {
+          return (
+            <Card key={index}>
+              <span>{task?.name}</span>
+              <TaskTypeIcon id={task?.id} />
+            </Card>
+          );
+        })}
+        <CreateTask boardId={boardId} />
+      </>
     </div>
   );
 };

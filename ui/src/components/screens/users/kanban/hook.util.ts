@@ -1,5 +1,6 @@
+import { useAddConfig } from "./../../../../utils/optimistic-options";
 import { TaskType } from "./../../../../types/task-type";
-import { useQuery } from "react-query";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { useHttp } from "./../../../../utils/http";
 import { useLocation } from "react-router-dom";
 import { Board } from "@src/types/board";
@@ -29,4 +30,30 @@ export const useTasks = (userId: number) => {
   return useQuery<Task[]>([`tasks/${userId}`, userId], () =>
     client(`tasks/${userId}`, {})
   );
+};
+
+export const useAddTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (data: Partial<Task>) => client("task", { method: "POST", data }),
+    useAddConfig(queryKey)
+  );
+};
+
+export const useTaskQueryKey = () => {
+  const id = useUserIdInUrl();
+  return [`tasks/${id}`, id];
+};
+
+export const useAddBoard = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (data: Partial<Board>) => client("board", { method: "POST", data }),
+    useAddConfig(queryKey)
+  );
+};
+
+export const useBoardQueryKey = () => {
+  const id = useUserIdInUrl();
+  return [`boards/${id}`, id];
 };
