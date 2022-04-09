@@ -2,7 +2,7 @@ import { Spin } from "antd";
 import React from "react";
 import { CreateKanBan } from "./create-kanban";
 import { useBoards, useUserIdInUrl } from "./hook.util";
-import { Task } from "./task";
+import { KanBanScreen } from "@src/components/screens/users/kanban/kan-ban";
 
 export const KanBan = () => {
   const { data: boards, isLoading } = useBoards(useUserIdInUrl());
@@ -12,14 +12,7 @@ export const KanBan = () => {
         <Spin size="large" />
       ) : (
         <>
-          {boards?.map((board, index) => {
-            return (
-              <div key={index} className="kanban-colum">
-                <h3>{board.name}</h3>
-                <Task boardId={board.id} />
-              </div>
-            );
-          })}
+          <KanBanScreen boards={boards} />
           <CreateKanBan />
         </>
       )}

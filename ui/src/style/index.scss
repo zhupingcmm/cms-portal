@@ -99,6 +99,14 @@ html body #root {
     flex-direction: column;
     padding: 0.7rem 0.7rem 1rem;
     margin-right: 1.5rem;
+    .kanban-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > h3 {
+        margin: 0;
+      }
+    }
   }
 }
 

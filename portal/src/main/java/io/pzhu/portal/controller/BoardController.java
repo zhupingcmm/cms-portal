@@ -1,6 +1,7 @@
 package io.pzhu.portal.controller;
 
 import io.pzhu.portal.entity.Board;
+import io.pzhu.portal.response.Response;
 import io.pzhu.portal.service.BoardService;
 import io.pzhu.portal.vo.BoardRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +37,11 @@ public class BoardController {
                .filter(board -> "oob".equals(board.getType()) || Long.valueOf(userid).equals(board.getUserId()))
                .collect(Collectors.toList());
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/board/{id}")
+    public ResponseEntity<Response> deleteBoardById(@PathVariable String id) {
+        boardService.deleteBoardById(Long.valueOf(id));
+        return ResponseEntity.ok(Response.builder().message("delete success").build());
     }
 }

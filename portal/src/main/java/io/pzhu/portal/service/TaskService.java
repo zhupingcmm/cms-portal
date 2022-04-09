@@ -8,4 +8,6 @@ public interface TaskService {
     List<Task> findAllTasks();
 
     Task addTask (Task task);
+
+    void deleteTaskById (Long id);
 }

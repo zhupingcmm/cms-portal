@@ -32,4 +32,13 @@ public class TaskServiceImpl implements TaskService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void deleteTaskById(Long id) {
+        try {
+            taskDao.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

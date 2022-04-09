@@ -8,4 +8,6 @@ public interface BoardService {
     List<Board> findAllBoards();
 
     Board addBoard (Board board);
+
+    void deleteBoardById(Long id);
 }

@@ -2,6 +2,7 @@ package io.pzhu.portal.controller;
 
 import io.pzhu.portal.entity.Task;
 import io.pzhu.portal.jwt.PassToken;
+import io.pzhu.portal.response.Response;
 import io.pzhu.portal.service.TaskService;
 import io.pzhu.portal.vo.TaskRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -39,4 +40,9 @@ public class TaskController {
         return ResponseEntity.ok(result);
     }
 
+    @DeleteMapping("/task/{id}")
+    public ResponseEntity<Response> deleteTaskById(@PathVariable String id) {
+        taskService.deleteTaskById(Long.valueOf(id));
+        return ResponseEntity.ok(Response.builder().message("delete success").build());
+    }
 }

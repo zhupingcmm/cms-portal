@@ -34,4 +34,13 @@ public class BoardServiceImpl implements BoardService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void deleteBoardById(Long id) {
+        try {
+            boardDao.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
