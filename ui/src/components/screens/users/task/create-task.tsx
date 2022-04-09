@@ -1,6 +1,7 @@
 import { Card, Input } from "antd";
 import React, { useState } from "react";
-import { useAddTask, useTaskQueryKey, useUserIdInUrl } from "./hook.util";
+import { useAddTask, useTaskQueryKey } from "./hook.util";
+import { useUserIdInUrl } from "../hook.util";
 
 export const CreateTask = ({ boardId }: { boardId: number }) => {
   const [addMode, setAddMode] = useState(false);

@@ -1,8 +1,8 @@
 import { Board } from "@src/types/board";
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu, Button, Modal } from "antd";
 import React, { useCallback } from "react";
 import { useBoardQueryKey, useDeleteBoard } from "./hook.util";
-import { Task } from "./task";
+import { Task } from "../task";
 
 export const KanBanScreen = ({ boards }: { boards?: Board[] }) => {
   return (
@@ -26,7 +26,14 @@ const More = ({ id }: { id: number }) => {
   const { mutateAsync: deleteBoard } = useDeleteBoard(useBoardQueryKey());
   const handleDelete = useCallback(
     (id: number) => {
-      deleteBoard(id);
+      Modal.confirm({
+        okText: "确认",
+        title: "确认删除",
+        content: "确认删除模板吗？",
+        onOk: () => deleteBoard(id),
+        cancelText: "取消",
+      });
+      //   deleteBoard(id);
     },
     [deleteBoard]
   );
