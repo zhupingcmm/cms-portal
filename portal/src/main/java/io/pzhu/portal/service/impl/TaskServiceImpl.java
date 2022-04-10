@@ -41,4 +41,14 @@ public class TaskServiceImpl implements TaskService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Task updateTask(Task task) {
+//        return null;
+        try {
+            return taskDao.save(task);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

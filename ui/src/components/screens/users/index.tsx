@@ -14,6 +14,7 @@ import { useDocumentTitle } from "@src/components/hook.util";
 import { Link } from "react-router-dom";
 import { UserHeader } from "./user-header";
 import { UserModel } from "./user-model";
+import { Profiler } from "@src/components/profiler";
 
 export const UsersPage = () => {
   useDocumentTitle("用户信息", false);

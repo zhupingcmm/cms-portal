@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Form, Input, Divider, Typography } from "antd";
 import { Register } from "./register";
 import { Login } from "./login";
-export const UnauthenticatedApp = () => {
+const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
   return (
     <div className="cardContainer">
@@ -16,3 +16,5 @@ export const UnauthenticatedApp = () => {
     </div>
   );
 };
+
+export default UnauthenticatedApp;

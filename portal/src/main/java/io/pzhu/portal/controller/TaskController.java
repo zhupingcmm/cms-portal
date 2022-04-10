@@ -45,4 +45,9 @@ public class TaskController {
         taskService.deleteTaskById(Long.valueOf(id));
         return ResponseEntity.ok(Response.builder().message("delete success").build());
     }
+
+    @PatchMapping("/task")
+    public ResponseEntity<Task> editTask(@RequestBody TaskRequest request) {
+        return ResponseEntity.ok(taskService.updateTask(request.toTask()));
+    }
 }

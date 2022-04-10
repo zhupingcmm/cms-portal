@@ -5,7 +5,7 @@ import { NavigationBar } from "@src/components/home/navigation-bar";
 import { UsersPage } from "@src/components/screens/users";
 import { UserInfo } from "@src/components/screens/users/user-info";
 
-export const AuthenticatedApp = () => {
+const AuthenticatedApp = () => {
   return (
     <>
       <NavigationBar />
@@ -20,3 +20,5 @@ export const AuthenticatedApp = () => {
     </>
   );
 };
+
+export default AuthenticatedApp;
