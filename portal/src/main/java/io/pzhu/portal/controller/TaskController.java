@@ -27,6 +27,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findAllTasks());
     }
 
+    @GetMapping("/task/{id}")
+    public ResponseEntity<Task> getTaskById (@PathVariable String id) {
+        return ResponseEntity.ok(taskService.findById(Long.valueOf(id)));
+    }
+
     @PostMapping("/task")
     public ResponseEntity<Task> addTask (@RequestBody TaskRequest taskRequest) {
         log.info("Try to add a task {}", taskRequest.getName());

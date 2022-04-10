@@ -25,10 +25,8 @@ export const Task = ({ boardId }: { boardId: number }) => {
 
   return (
     <div>
-      <>
-        <TaskScreen tasks={tasks} />
-        <CreateTask boardId={boardId} />
-      </>
+      <TaskScreen tasks={tasks} />
+      <CreateTask boardId={boardId} />
     </div>
   );
 };

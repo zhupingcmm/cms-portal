@@ -51,4 +51,13 @@ public class TaskServiceImpl implements TaskService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Task findById(Long id) {
+        try {
+            return taskDao.findById(id).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

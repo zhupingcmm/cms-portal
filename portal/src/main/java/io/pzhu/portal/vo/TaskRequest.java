@@ -19,12 +19,18 @@ public class TaskRequest {
 
     private Long boardId;
 
+    private String note;
+
+    private Long typeId;
+
     public Task toTask() {
         return Task.builder()
                 .id(id)
                 .name(name)
                 .userId(userId)
                 .boardId(boardId)
+                .note(note)
+                .typeId(typeId)
                 .build();
     }
 }

@@ -2,7 +2,12 @@ import { Task } from "@src/types/task";
 import React, { useCallback, useMemo } from "react";
 import bugIcon from "@src/assets/bug.svg";
 import featureIcon from "@src/assets/feature.svg";
-import { useDeleteTask, useTaskQueryKey, useTaskTypes } from "./hook.util";
+import {
+  useDeleteTask,
+  useTaskModal,
+  useTaskQueryKey,
+  useTaskTypes,
+} from "./hook.util";
 import { Button, Card, Dropdown, Menu, Modal } from "antd";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -15,11 +20,12 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 };
 
 export const TaskScreen = ({ tasks }: { tasks?: Task[] }) => {
+  const { startEdit } = useTaskModal();
   return (
     <>
       {tasks?.map((task, index) => {
         return (
-          <Card key={index}>
+          <Card key={index} onClick={() => startEdit(task.id)}>
             <div>
               <span>{task?.name}</span>
               <More id={task?.id} />

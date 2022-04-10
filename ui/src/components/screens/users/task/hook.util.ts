@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useUrlQueryParam } from "@src/utils/url";
+import { useEditConfig } from "./../../../../utils/optimistic-options";
 import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { QueryKey } from "react-query";
@@ -19,6 +22,13 @@ export const useTasks = (userId: number) => {
   );
 };
 
+export const useTask = (id: number) => {
+  const client = useHttp();
+  return useQuery<Task>(["task", { id }], () => client(`task/${id}`, {}), {
+    enabled: !!id,
+  });
+};
+
 export const useAddTask = (queryKey: QueryKey) => {
   const client = useHttp();
   return useMutation(
@@ -33,6 +43,37 @@ export const useDeleteTask = (queryKey: QueryKey) => {
     (id: number) => client(`task/${id}`, { method: "DELETE" }),
     useAddConfig(queryKey)
   );
+};
+export const useEditTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (data: Partial<Task>) => client("task", { method: "PATCH", data }),
+    useEditConfig(queryKey)
+  );
+};
+
+export const useTaskModal = () => {
+  const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam([
+    "editingTaskId",
+  ]);
+  const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
+  const startEdit = useCallback(
+    (id: number) => {
+      setEditingTaskId({ editingTaskId: id });
+    },
+    [setEditingTaskId]
+  );
+
+  const close = useCallback(() => {
+    setEditingTaskId({ editingTaskId: "" });
+  }, [setEditingTaskId]);
+  return {
+    editingTaskId,
+    editingTask,
+    startEdit,
+    close,
+    isLoading,
+  };
 };
 
 export const useTaskTypes = () => {
