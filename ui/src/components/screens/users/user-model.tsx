@@ -1,8 +1,5 @@
-import { User } from "@src/types";
-import { Button, Drawer, DrawerProps, Form, Input, Space, Spin } from "antd";
-import useModal from "antd/lib/modal/useModal";
+import { Button, Drawer, Form, Input, Spin } from "antd";
 import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import {
   useAddUser,
   useEditUser,

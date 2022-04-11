@@ -1,4 +1,4 @@
-import { Param, User } from "@src/types";
+import { Param } from "@src/types";
 import { Form, Input, Select } from "antd";
 import React from "react";
 interface SearchPanelProps {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Param, User } from "@src/types";
+import { User } from "@src/types";
 import { Button, Dropdown, Menu, Modal, Table, Typography } from "antd";
 import { SearchPanel } from "./search-panel";
 import { useDebounce } from "@src/utils/hook.util";
